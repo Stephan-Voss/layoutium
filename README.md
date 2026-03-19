@@ -11,12 +11,11 @@ FEATURES
 
 MOTIVATION
 I wanted a flexible and easy to use WYSIWYG editor for tabletop game component design. 
-InDesign (expensive) and Scribus are great for rules books, but I needed something 
-else for prototyping and quick iterative development. 
+InDesign (expensive) and Scribus are great for rules books, but I needed something else for prototyping and quick iterative development. 
 
 HOW TO RUN
 Run packageThis.py to create executable windows file.
-- or -
+~ or ~
 pip install -r requirements.txt
 python layoutiumMain.py
 

@@ -22,13 +22,18 @@ python layoutiumMain.py
 MANUAL  
 Disclaimer: Yes, the icons are silly, but this was made for personal use, and they can easily be replaced by others with similar names. Icons do have tool-tips to make the app usable for others...  
 
-~ Page Setup ~
+~ Page Setup ~  
 Paper size is adjusted by entering pixel values for "Paper W" and "H".  
-You can set a background through the "Insert" menu.
+You can set a background through the "Insert" menu.  
 By default, bleed is on and won't allow items to cross it's invisible border. Click the green satyr icon to toggle bleed. If a box is refusing to obey bleed, deselect it (by clicking anywhere on the page) and then reselect it.  
+Snap-to-grid can be enabled by entering a pixel value different from 1 for "Grid".  
+The page is zoomable through ctrl+scrolling or the egg, dragon and tree icons.  
 
 ~ Boxes ~  
-Add a text/image box by hitting the scroll icon. You can embed images by clicking the pixie icon.  
+Add a text/image box by hitting the scroll icon.  
+Boxes by default rezise to fit their contents. Hit the map icon to lock a box to the pixel values entered for "Box W" and "H" (or to unlock it).  
+To position the box, just drag-and-drop or enter pixel values for "Pos X" and "Y".   
+You can embed images by clicking the pixie icon.  
 To set a background image for the box, use the Insert menu.  
 Selected text can be formatted by clicking the tome icon.  
 Padding (box internal margin) is set by entering a pixel value for "Pad".  

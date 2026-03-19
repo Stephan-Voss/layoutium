@@ -3,6 +3,7 @@ A custom graphics and text layout engine built with PySide6.
 Supports layered elements, layout templates, rich text formatting and pdf export.
 
 FEATURES
+
 -Layered graphics system (drag & drop)
 -Custom text rendering with formatting
 -Layout persistence using serialization
@@ -15,7 +16,7 @@ InDesign (expensive) and Scribus are great for rules books, but I needed somethi
 
 HOW TO RUN
 Run packageThis.py to create executable windows file.
-~ or ~
+Or do this:
 pip install -r requirements.txt
 python layoutiumMain.py
 

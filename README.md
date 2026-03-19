@@ -1,17 +1,16 @@
 # Layoutium
-A custom graphics and text layout engine built with PySide6.
-Supports layered elements, layout templates, rich text formatting and pdf export.
+A custom graphics and text layout engine for printable components.
 
 FEATURES  
--Layered graphics system (drag & drop)  
--Custom text rendering with formatting  
--Layout persistence using serialization  
--Modular architecture  
--Built with Python, PySide6 (Qt) and Pillow  
+Layered graphics system (drag & drop).  
+Rich text formatting with CMYK-colors.  
+Layout/template persistence using serialization.  
+Extendable, modular architecture.  
+Built with Python and PySide6 (Qt).  
 
 MOTIVATION  
-I wanted a flexible and easy to use WYSIWYG editor for tabletop game component design.  
-InDesign (expensive) and Scribus are great for rules books, but I needed something else for prototyping and quick iterative development.  
+I wanted a flexible and easy to use WYSIWYG editor for tabletop game component design that could handle CMYK-colors.  
+InDesign (expensive) and Scribus are great for rules books, but I needed something else for quick and flexible iterative development.  
 
 HOW TO RUN  
 Run packageThis.py to create executable windows file.  

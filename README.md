@@ -3,7 +3,6 @@ A custom graphics and text layout engine built with PySide6.
 Supports layered elements, layout templates, rich text formatting and pdf export.
 
 FEATURES
-
 -Layered graphics system (drag & drop)
 -Custom text rendering with formatting
 -Layout persistence using serialization

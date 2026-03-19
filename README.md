@@ -25,7 +25,7 @@ Disclaimer: Yes, the icons are silly, but this was made for personal use, and th
 ~ Page Setup ~  
 Paper size is adjusted by entering pixel values for "Paper W" and "H".  
 You can set a background through the "Insert" menu.  
-By default, bleed is on and won't allow items to cross it's invisible border. Click the green satyr icon to toggle bleed. If a box is refusing to obey bleed, deselect it (by clicking anywhere on the page) and then reselect it.  
+By default, bleed is on and won't allow items to cross its invisible border. Click the green satyr icon to toggle bleed. If a box is refusing to obey bleed, deselect it (by clicking anywhere on the page) and then reselect it.  
 Snap-to-grid can be enabled by entering a pixel value different from 1 for "Grid".  
 The page is zoomable through ctrl+scrolling or the egg, dragon and tree icons.  
 
@@ -55,3 +55,8 @@ Caveats:
 -Groups are nice, but currently they do not obey page borders/bleed/grid and cannot be rotated collectively.  
 -Grouped boxes cannot be edited until they have ben released.  
 -While grouped, clicking the group will not properly highlight boxes in the layer list.  
+
+~ Layout Templates ~  
+
+~ Exporting Files ~  
+

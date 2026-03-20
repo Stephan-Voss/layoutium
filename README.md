@@ -24,7 +24,7 @@ Disclaimer: Yes, the icons are silly, but this was made for personal use, and th
 ~ Page Setup ~  
 Paper size is adjusted by entering pixel values for "Paper W" and "H".  
 You can set a background through the "Insert" menu. The background image does not scale to fill the page.  
-By default, bleed is on and won't allow items to cross its invisible border. Click the green satyr icon to toggle bleed. If a box is refusing to obey bleed, deselect it (by clicking anywhere on the page) and then reselect it.  
+By default, bleed is on and won't allow items to cross its (invisible) border. Bleed is hardcoded at 35 pixels which gives the 3mm industry standard as long as you stick to 300 dpi. Click the green satyr icon to toggle bleed. If a box is refusing to obey bleed, deselect it (by clicking anywhere on the page) and then reselect it.  
 Snap-to-grid can be enabled by entering a pixel value different from 1 for "Grid".  
 The page is zoomable through ctrl+scrolling or the egg, dragon and tree icons.  
 
@@ -67,12 +67,18 @@ If you have a text file with a simple list of page layout .json filepaths (absol
 ~ Exporting Files ~  
 Pages can be exported to .pdf or .png through the File menu.
 If you have a text file with a simple list of page layout .json files, the items in it can be turned into a collage by running batch jobs. Useful for, say, making pdfs with cards lined up for printing.
-The export text file must be formatted like so:
+The export text file must be formatted like so:  
 <code>pdfFileName = cards.pdf ; pdfResolution = 300 ; pdfColorModel = CMYK ; pdfSizeX = 210 ; pdfSizeY= 297 ; pdfUnit = mm ; separator = 4  
 fileName = card1.layout.json ; posX = 120 ; posY = 120 ; newPage = 0  
 fileName = card2.layout.json ; posX = -1 ; posY = -1 ; newPage = 0  
 fileName = card2.layout.json ; posX = -1 ; posY = -1 ; newPage = 0</code>  
-... etc.
+... etc.   
+pdfResolution is in dpi.  
+pdfSizesX & pdfSizesY can be set to mm. Trying anything else will result in incehs.  
+Files will be placed and fitted on the page automatically if you give posX and posY as negative integers. Setting positive integer values instead will force the (upper left corner of the) item to be placed at the given coordinates.  
+Setting newPage=1 will force the item onto a new page. Better remember to give it coordinates, in this case...  
+The separator value in pixels is added to make (blank) space between the components.  
+Setting pdfColorModel to anything other than CMYK will result in RGB.  
 
 ~ Known Issues ~
-Bug 001: When opening files, canceling may throw unhandled exceptions.
+Bug 001: When opening files, canceling may throw unhandled exceptions.  

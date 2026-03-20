@@ -78,7 +78,7 @@ Contents of file "cards.list":
 C:/Users/JohnDoe/TTGS/AwesomeGame/card1.layout.json  
 C:/Users/JohnDoe/TTGS/AwesomeGame/card2.layout.json  
 C:/Users/JohnDoe/TTGS/AwesomeGame/card4.layout.json  
-</code>  
+</code>
 If the target filenames include the string "layoutWeak", the templates page background will be applied.  
 If the target filenames include the string "layoutStrict", the templates box backgrounds will <i>not</i> be applied.  
 Warning: This will delete anything currently onscreen!  
@@ -88,14 +88,14 @@ Warning: This will delete anything currently onscreen!
 Pages can be exported to .pdf (CMYK) or .png (RGB) through the File menu.
 If you have a text file with a simple list of page layout .json files, the items can be processed as a batch job.  
 
-For pdf batch jobs, you get a single file with a "collage" of, say, cards lined up for printing. The export text file (.setup) must be formatted with one line for overall settings and then one line per layout file, like so:  
+For pdf batch jobs, you get a single file with a "collage" of, say, cards lined up for printing. The export text file (.setup) must be formatted with one line for overall settings and then one line per layout file, like so:
 <code>
 Contents of file "cardsForPDF.setup":  
 outputFileName = cards.pdf ; pdfResolution = 300 ; pdfColorModel = CMYK ; pdfSizeX = 210 ; pdfSizeY= 297 ; pdfUnit = mm ; separator = 4  
 fileName = card1.layout.json ; posX = 120 ; posY = 120 ; newPage = 0  
 fileName = card2.layout.json ; posX = -1 ; posY = -1 ; newPage = 0  
 fileName = card2.layout.json ; posX = -1 ; posY = -1 ; newPage = 0
-</code>  
+</code>
 ... etc.  
 pdfResolution is in dpi.  
 pdfSizesX & pdfSizesY can be set to mm. Trying anything else will result in incehs.  
@@ -104,19 +104,15 @@ Setting newPage=1 will force the item onto a new page. Better remember to give i
 The separator value in pixels is added to make (blank) space between the components.  
 Setting pdfColorModel to anything other than CMYK will result in RGB.  
 
-Image batch jobs spit out an individual image for each layout file. In this case, the setup file (.setup) must follow this format:  
+Image batch jobs spit out an individual image for each layout file. In this case, the setup file (.setup) must follow this format:
 <code>
 Contents of file "cardsForImaging.setup":  
 imageResolution = 300 ; colorModel = CMYK  
 fileName = card1.layout.json  
 fileName = card2.layout.json  
 fileName = card3.layout.json
-</code>  
+</code>
 ... etc.  
 imageResolution is in dpi.  
 Anything but CMYK for the colormodel will result in RGB. Images are saved as .jpeg for CMYK and .png for RGB (to allow transparency).  
 Warning: This will delete anything currently onscreen!  
-
-
-KNOWN ISSUES  
-Bug 001: When opening files, canceling may throw unhandled exceptions.  

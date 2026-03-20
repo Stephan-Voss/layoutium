@@ -23,7 +23,7 @@ Disclaimer: Yes, the icons are silly, but this was made for personal use, and th
 
 ~ Page Setup ~  
 Paper size is adjusted by entering pixel values for "Paper W" and "H".  
-You can set a background through the "Insert" menu.  
+You can set a background through the "Insert" menu. The background image does not scale to fill the page.  
 By default, bleed is on and won't allow items to cross its invisible border. Click the green satyr icon to toggle bleed. If a box is refusing to obey bleed, deselect it (by clicking anywhere on the page) and then reselect it.  
 Snap-to-grid can be enabled by entering a pixel value different from 1 for "Grid".  
 The page is zoomable through ctrl+scrolling or the egg, dragon and tree icons.  
@@ -33,7 +33,7 @@ Add a text/image box by hitting the scroll icon.
 Boxes by default rezise to fit their contents. Hit the map icon to lock the size of the selected box to the pixel values entered for "Box W" and "H". (Click again to unlock.)  
 To position the box, just drag-and-drop or enter pixel values for "Pos X" and "Y".   
 You can embed images into text by clicking the pixie icon.  
-To set a background image for the box, use the Insert menu.  
+To set a background image for the box, use the Insert menu. This background image will scale automatically to fit the box.  
 Selected text can be formatted by clicking the tome icon.  
 Padding (box internal margin) is set by entering a pixel value for "Pad".  
 Clicking the square to the left of the unicorn, will allow you to select a color. Clicking the unicorn afterwards will apply the chosen color to any selected text in the box. Note that you need to write down the colors you want to use, as the color picker does not "remember" them.
@@ -55,7 +55,24 @@ Caveats:
 -Grouped boxes cannot be edited until they have ben released.  
 -While grouped, clicking the group will not properly highlight boxes in the layer list.  
 
-~ Layout Templates ~  
+~ Persistence ~  
+Save the current page layout and everything on it as .json-file, either from the File menu or by clicking the knight icon.
+The witch icon will load a saved page layout, or you can use the File menu.
+
+~ Templates ~  
+You can apply a saved page layout to the current page through Edit in the menu. Warning: The two pages should have the same number of boxes or strange things may happen!  
+
+If you have a text file with a simple list of page layout .json filepaths (absolute)
 
 ~ Exporting Files ~  
+Pages can be exported to .pdf or .png through the File menu.
+If you have a text file with a simple list of page layout .json files, the items in it can be turned into a collage by running batch jobs. Useful for, say, making pdfs with cards lined up for printing.
+The export text file must be formatted like so:
+<code>pdfFileName = cards.pdf ; pdfResolution = 300 ; pdfColorModel = CMYK ; pdfSizeX = 210 ; pdfSizeY= 297 ; pdfUnit = mm ; separator = 4  
+fileName = card1.layout.json ; posX = 120 ; posY = 120 ; newPage = 0  
+fileName = card2.layout.json ; posX = -1 ; posY = -1 ; newPage = 0  
+fileName = card2.layout.json ; posX = -1 ; posY = -1 ; newPage = 0</code>  
+... etc.
 
+~ Known Issues ~
+Bug 001: When opening files, canceling may throw unhandled exceptions.

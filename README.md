@@ -113,5 +113,5 @@ fileName = card2.layout.json
 fileName = card3.layout.json
 </code>
 imageResolution is in dpi.  
-Anything but CMYK for the colormodel will result in RGB. Images are saved as .jpeg for CMYK and .png for RGB (to allow transparency).  
+Anything but CMYK for colorModel will result in RGB. Images are saved as .jpeg for CMYK and .png for RGB (to allow transparency).  
 Warning: This will delete anything currently onscreen!  

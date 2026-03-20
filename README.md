@@ -8,9 +8,11 @@ Layout/template persistence using serialization.
 Extendable, modular architecture.  
 Built with Python and PySide6 (Qt).  
 
+
 MOTIVATION  
 I wanted a flexible and easy to use WYSIWYG editor for tabletop game component design that could handle CMYK-colors.  
 InDesign (expensive) and Scribus are great for rules books, but I needed something else for quick and flexible iterative development.  
+
 
 HOW TO RUN  
 Run packageThis.py to create executable windows file.  
@@ -18,8 +20,10 @@ Or do this:
 pip install -r requirements.txt  
 python layoutiumMain.py  
 
-MANUAL  
+
+HOW TO USE  
 Disclaimer: Yes, the icons are silly, but this was made for personal use, and they can easily be replaced by others with similar names. Icons do have tool-tips to make the app usable for others...  
+
 
 ~ Page Setup ~  
 Paper size is adjusted by entering pixel values for "Paper W" and "H".  
@@ -27,6 +31,7 @@ You can set a background through the "Insert" menu. The background image does no
 By default, bleed is on and won't allow items to cross its (invisible) border. Bleed is hardcoded at 35 pixels which gives the 3mm industry standard as long as you stick to 300 dpi. Click the green satyr icon to toggle bleed. If a box is refusing to obey bleed, deselect it (by clicking anywhere on the page) and then reselect it.  
 Snap-to-grid can be enabled by entering a pixel value different from 1 for "Grid".  
 The page is zoomable through ctrl+scrolling or the egg, dragon and tree icons.  
+
 
 ~ Boxes ~  
 Add a text/image box by hitting the scroll icon.  
@@ -40,10 +45,12 @@ Clicking the square to the left of the unicorn, will allow you to select a color
 Boxes can be rotated by just typing in the desired angle (in degrees). Caveat: Rotated boxes do not obey borders/bleed.  
 Shortcuts are ctrl +: B(bold), I(italics), U(underline), K(small caps), "Up arrow"(superscript), "Down arrow"(subscript), P(apply color), D(open color selector).  
 
+
 ~ Layers ~  
 Each box is its own layer and is shown in the layer list on the right. The currently selected box is highlighted. 
 Click the layer title in the list to rename it.  
 Boxes are moved up/down in the z-direction by drag-and-dropping the layer title in the list.  
+
 
 ~ Groups ~  
 Boxes can be grouped by ctrl + clicking the actual items (not the titles in the layer list), and then hitting the spider icon.  
@@ -55,17 +62,21 @@ Caveats:
 -Grouped boxes cannot be edited until they have ben released.  
 -While grouped, clicking the group will not properly highlight boxes in the layer list.  
 
+
 ~ Persistence ~  
 Save the current page layout and everything on it as .json-file, either from the File menu or by clicking the knight icon.
 The witch icon will load a saved page layout, or you can use the File menu.
 
-~ Templates ~  
-You can apply a saved page layout to the current page through Edit in the menu. Warning: The two pages should have the same number of boxes or strange things may happen!  
 
-If you have a text file with a simple list of page layout .json filepaths (absolute)
+~ Templates ~  
+You can apply a saved page layout to the current page through Edit in the menu.  
+Warning: The two pages should have the same number of boxes or new boxes will pop up.  
+
+You can do a batch job where you load a text file with a simple list of page layout .json filepaths (absolute) and then load a page layout as a template that should be applied to the list items.  
+Warning: This will delete anything currently onscreen!  
 
 ~ Exporting Files ~  
-Pages can be exported to .pdf or .png through the File menu.
+Pages can be exported to .pdf (CMYK) or .png (RGB) through the File menu.
 If you have a text file with a simple list of page layout .json files, the items can be processed as a batch job.  
 
 For pdf batch jobs, you get a single file with a "collage" of, say, cards lined up for printing. The export text file must be formatted with one line for overall settings and then one line per layout file, like so:  
@@ -87,8 +98,10 @@ fileName = card1.layout.json
 fileName = card2.layout.json  
 fileName = card3.layout.json</code>  
 ... etc.  
-imageResolution is dpi.  
-Anything but CMYK for the colormodel will result in RGB. Images are saved as .jpeg for CMYK and .png for RGB.  
+imageResolution is in dpi.  
+Anything but CMYK for the colormodel will result in RGB. Images are saved as .jpeg for CMYK and .png for RGB (to allow transparency).  
+Warning: This will delete anything currently onscreen!  
 
-~ Known Issues ~
+
+KNOWN ISSUES  
 Bug 001: When opening files, canceling may throw unhandled exceptions.  

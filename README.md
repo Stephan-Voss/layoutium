@@ -74,7 +74,7 @@ Warning: The two pages should have the same number of boxes or new boxes will po
 
 You can do a batch job where you load a text file with a simple list of page layout .json filepaths (absolute) and then load a page layout as a template that should be applied to the list items.  
 If the target filenames include the string "layoutWeak", the templates page background will be applied.  
-If the target filenames include the string "layoutStrict", the templates box backgrounds will <i>not be applied</i>.  
+If the target filenames include the string "layoutStrict", the templates box backgrounds will <i>not</i> be applied.  
 Warning: This will delete anything currently onscreen!  
 
 

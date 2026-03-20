@@ -8,7 +8,7 @@ Layout persistence using serialization.
 Templates for mass editing. 
 Extendable, modular architecture.  
 Built with Python and PySide6 (Qt).  
-
+  
   
 MOTIVATION  
 I wanted a flexible and easy to use WYSIWYG editor for tabletop game component design that could handle CMYK-colors.  

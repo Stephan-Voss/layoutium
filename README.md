@@ -72,7 +72,13 @@ The witch icon will load a saved page layout, or you can use the File menu.
 You can apply a saved page layout to the current page through Edit in the menu.  
 Warning: The two pages should have the same number of boxes or new boxes will pop up.  
 
-You can do a batch job where you load a text file with a simple list of page layout .json filepaths (absolute) and then load a page layout as a template that should be applied to the list items.  
+You can do a batch job where you load a text file (.list) containing a simple list of page layout .json filepaths (absolute) and then load a page layout as a template that should be applied to the list items. Example:
+<code>
+Contents of file "cards.list":  
+C:/Users/JohnDoe/TTGS/AwesomeGame/card1.layout.json  
+C:/Users/JohnDoe/TTGS/AwesomeGame/card2.layout.json  
+C:/Users/JohnDoe/TTGS/AwesomeGame/card4.layout.json  
+</code>  
 If the target filenames include the string "layoutWeak", the templates page background will be applied.  
 If the target filenames include the string "layoutStrict", the templates box backgrounds will <i>not</i> be applied.  
 Warning: This will delete anything currently onscreen!  
@@ -82,11 +88,14 @@ Warning: This will delete anything currently onscreen!
 Pages can be exported to .pdf (CMYK) or .png (RGB) through the File menu.
 If you have a text file with a simple list of page layout .json files, the items can be processed as a batch job.  
 
-For pdf batch jobs, you get a single file with a "collage" of, say, cards lined up for printing. The export text file must be formatted with one line for overall settings and then one line per layout file, like so:  
-<code>outputFileName = cards.pdf ; pdfResolution = 300 ; pdfColorModel = CMYK ; pdfSizeX = 210 ; pdfSizeY= 297 ; pdfUnit = mm ; separator = 4  
+For pdf batch jobs, you get a single file with a "collage" of, say, cards lined up for printing. The export text file (.setup) must be formatted with one line for overall settings and then one line per layout file, like so:  
+<code>
+Contents of file "cardsForPDF.setup":  
+outputFileName = cards.pdf ; pdfResolution = 300 ; pdfColorModel = CMYK ; pdfSizeX = 210 ; pdfSizeY= 297 ; pdfUnit = mm ; separator = 4  
 fileName = card1.layout.json ; posX = 120 ; posY = 120 ; newPage = 0  
 fileName = card2.layout.json ; posX = -1 ; posY = -1 ; newPage = 0  
-fileName = card2.layout.json ; posX = -1 ; posY = -1 ; newPage = 0</code>  
+fileName = card2.layout.json ; posX = -1 ; posY = -1 ; newPage = 0
+</code>  
 ... etc.  
 pdfResolution is in dpi.  
 pdfSizesX & pdfSizesY can be set to mm. Trying anything else will result in incehs.  
@@ -95,11 +104,14 @@ Setting newPage=1 will force the item onto a new page. Better remember to give i
 The separator value in pixels is added to make (blank) space between the components.  
 Setting pdfColorModel to anything other than CMYK will result in RGB.  
 
-Image batch jobs spit out an individual image for each layout file. In this case, the setup file must follow this format:  
-<code>imageResolution = 300 ; colorModel = CMYK  
+Image batch jobs spit out an individual image for each layout file. In this case, the setup file (.setup) must follow this format:  
+<code>
+Contents of file "cardsForImaging.setup":  
+imageResolution = 300 ; colorModel = CMYK  
 fileName = card1.layout.json  
 fileName = card2.layout.json  
-fileName = card3.layout.json</code>  
+fileName = card3.layout.json
+</code>  
 ... etc.  
 imageResolution is in dpi.  
 Anything but CMYK for the colormodel will result in RGB. Images are saved as .jpeg for CMYK and .png for RGB (to allow transparency).  

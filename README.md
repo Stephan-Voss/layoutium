@@ -4,7 +4,8 @@ A custom graphics and text layout engine for printable components.
 FEATURES  
 Layered graphics system (drag & drop).  
 Rich text formatting with CMYK-colors.  
-Layout/template persistence using serialization.  
+Layout persistence using serialization.  
+Templates for mass editing. 
 Extendable, modular architecture.  
 Built with Python and PySide6 (Qt).  
 

@@ -66,19 +66,29 @@ If you have a text file with a simple list of page layout .json filepaths (absol
 
 ~ Exporting Files ~  
 Pages can be exported to .pdf or .png through the File menu.
-If you have a text file with a simple list of page layout .json files, the items in it can be turned into a collage by running batch jobs. Useful for, say, making pdfs with cards lined up for printing.
-The export text file must be formatted like so:  
-<code>pdfFileName = cards.pdf ; pdfResolution = 300 ; pdfColorModel = CMYK ; pdfSizeX = 210 ; pdfSizeY= 297 ; pdfUnit = mm ; separator = 4  
+If you have a text file with a simple list of page layout .json files, the items can be processed as a batch job.  
+
+For pdf batch jobs, you get a single file with a "collage" of, say, cards lined up for printing. The export text file must be formatted with one line for overall settings and then one line per layout file, like so:  
+<code>outputFileName = cards.pdf ; pdfResolution = 300 ; pdfColorModel = CMYK ; pdfSizeX = 210 ; pdfSizeY= 297 ; pdfUnit = mm ; separator = 4  
 fileName = card1.layout.json ; posX = 120 ; posY = 120 ; newPage = 0  
 fileName = card2.layout.json ; posX = -1 ; posY = -1 ; newPage = 0  
 fileName = card2.layout.json ; posX = -1 ; posY = -1 ; newPage = 0</code>  
-... etc.   
+... etc.  
 pdfResolution is in dpi.  
 pdfSizesX & pdfSizesY can be set to mm. Trying anything else will result in incehs.  
 Files will be placed and fitted on the page automatically if you give posX and posY as negative integers. Setting positive integer values instead will force the (upper left corner of the) item to be placed at the given coordinates.  
 Setting newPage=1 will force the item onto a new page. Better remember to give it coordinates, in this case...  
 The separator value in pixels is added to make (blank) space between the components.  
 Setting pdfColorModel to anything other than CMYK will result in RGB.  
+
+Image batch jobs spit out an individual image for each layout file. In this case, the setup file must follow this format:  
+<code>imageResolution = 300 ; colorModel = CMYK  
+fileName = card1.layout.json  
+fileName = card2.layout.json  
+fileName = card3.layout.json</code>  
+... etc.  
+imageResolution is dpi.  
+Anything but CMYK for the colormodel will result in RGB. Images are saved as .jpeg for CMYK and .png for RGB.  
 
 ~ Known Issues ~
 Bug 001: When opening files, canceling may throw unhandled exceptions.  

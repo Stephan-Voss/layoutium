@@ -1,13 +1,10 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsView, QGraphicsTextItem, QGraphicsItem, QPushButton, QVBoxLayout, QWidget, QFileDialog, QLineEdit, QLabel, QFontDialog, QTextBrowser, QGraphicsPixmapItem, QToolBar
-from PySide6.QtGui import  QPen, QColor, QCursor, QPageSize, QPdfWriter, QPagedPaintDevice, QFont, QPainter, QTextCursor, QTextFormat, QTextImageFormat, QTextCharFormat, QImage, QTextDocument, QPixmap, QAction, QKeySequence, QIcon
-from PySide6.QtCore import Qt, QPointF, QByteArray, QUrl, QRectF, QMargins, QSizeF
-import json
-import os
-import sys
+from PySide6.QtWidgets import QGraphicsScene, QGraphicsItem
+from PySide6.QtGui import  QPen, QColor, QPixmap, QIcon
+from PySide6.QtCore import Qt
 #sys.path.append(os.path.dirname(os.path.abspath(__file__)))  # Ensure current directory is in sys.path
 from SnapToGridGroup import SnapToGridGroup
 from CMYKColorDialog import CMYKColorDialog
-from tools import *
+from tools import getAssetPath
 
 ###
 ###

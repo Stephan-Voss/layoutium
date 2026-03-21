@@ -1,8 +1,5 @@
-from PySide6.QtWidgets import (
-    QApplication, QGraphicsScene, QGraphicsView, QGraphicsTextItem, 
-    QVBoxLayout, QHBoxLayout, QDialog, QPushButton, QLabel, QSlider, QWidget
-)
-from PySide6.QtGui import QFont, QTextCursor, QTextCharFormat, QColor
+from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout, QDialog, QPushButton, QLabel, QSlider, QWidget
+from PySide6.QtGui import QColor
 from PySide6.QtCore import Qt, Signal
 
 class CMYKColorDialog(QDialog):
@@ -23,7 +20,7 @@ class CMYKColorDialog(QDialog):
             label = QLabel(f"{color}: 0")
             slider = QSlider(Qt.Horizontal)
             slider.setRange(0, 255)
-            slider.valueChanged.connect(lambda val, l=label, c=color: self.updateLabel(l, val, c))
+            slider.valueChanged.connect(lambda val, lab=label, col=color: self.updateLabel(lab, val, col))
             self.sliders[color] = slider
             self.labels[color] = label
 

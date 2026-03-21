@@ -1,16 +1,13 @@
-from PySide6.QtWidgets import QListWidgetItem, QApplication, QMainWindow, QGraphicsScene, QGraphicsView, QGraphicsTextItem, QWidgetAction, QToolButton, QPushButton, QHBoxLayout, QVBoxLayout, QWidget, QFileDialog, QLineEdit, QLabel, QFontDialog, QTextBrowser, QGraphicsPixmapItem, QToolBar
-from PySide6.QtGui import  QBrush, QPen, QColor, QCursor, QKeyEvent, QPageSize, QPdfWriter, QPagedPaintDevice, QFont, QPainter, QTextCursor, QTextFormat, QTextImageFormat, QTextCharFormat, QImage, QTextDocument, QPixmap, QAction, QKeySequence, QIcon
-from PySide6.QtCore import Qt, QPointF, QByteArray, QUrl, QRectF, QMargins, QSizeF
+from PySide6.QtWidgets import QListWidgetItem, QWidgetAction, QToolButton, QHBoxLayout, QVBoxLayout, QWidget, QFileDialog, QLineEdit, QLabel, QFontDialog, QToolBar
+from PySide6.QtGui import  QKeyEvent, QPageSize, QPdfWriter, QPagedPaintDevice, QFont, QPainter, QTextCursor, QTextImageFormat, QTextCharFormat, QImage, QAction, QKeySequence, QIcon
+from PySide6.QtCore import Qt, QPointF, QUrl, QRectF, QMargins, QSizeF
 import json
-import weakref
-import os
-import sys
 #sys.path.append(os.path.dirname(os.path.abspath(__file__)))  # Ensure current directory is in sys.path
 from GraphicsView import GraphicsView
 from GraphicsScene import GraphicsScene
 from GraphicsTextItem import GraphicsTextItem
 from LayerControl import LayerControl
-from tools import *
+from tools import getAssetPath
 
 class GraphicsEditor(QWidget):
     def __init__(self, mainWindow):
@@ -600,19 +597,8 @@ class GraphicsEditor(QWidget):
 #                     self.scene.addItem(textItem)
             self.activeTextItem = None # Removes reference to old, no longer existing object.
             self.scene.setActiveTextItem(self.activeTextItem)
-    
-    # Batch process where a list of layouts are loaded onscreen in turn to have a template applied to them.
-    def batchApplyTemplate(self):
-        fileListName, dummy = QFileDialog.getOpenFileName(self, "Load Targets", "", "List Files (*.list)")
-        if fileListName: 
-            with open(fileListName, "r", encoding="utf-8") as file:
-                fileList = [line.strip() for line in file]
-            templateFileName, dummy = QFileDialog.getOpenFileName(self, "Load Template", "", "JSON Files (*.json)")
-            for targetFileName in fileList:
-                applyTemplate(targetFileName=targetFileName, templateFileName=templateFileName)
-                saveLayout(fileName=targetFileName)
-                
-    
+
+
     def applyTemplate(self, targetFileName=None, templateFileName=None):
         if not templateFileName: # Single file process where the template is loaded and applied to the onscreen page.    
             templateFileName, dummy = QFileDialog.getOpenFileName(self, "Load Template", "", "JSON Files (*.json)")
@@ -682,7 +668,7 @@ class GraphicsEditor(QWidget):
                         self.updateRotationInput()
                     if "visible" in templateKeys:
                         sceneItems[t].visible = templateItem["visible"]
-                    if targetFileName and not "layoutStrict" in targetFileName:
+                    if targetFileName and "layoutStrict" not in targetFileName:
                         if templateItem["backgroundImagePath"]:
                             sceneItems[t].setBackgroundImage(templateItem["backgroundImagePath"])
                     self.activeTextItem = sceneItems[t]
@@ -694,6 +680,18 @@ class GraphicsEditor(QWidget):
                 self.scene.setActiveTextItem(self.activeTextItem)
                 
 
+    # Batch process where a list of layouts are loaded onscreen in turn to have a template applied to them.
+    def batchApplyTemplate(self):
+        fileListName, dummy = QFileDialog.getOpenFileName(self, "Load Targets", "", "List Files (*.list)")
+        if fileListName: 
+            with open(fileListName, "r", encoding="utf-8") as file:
+                fileList = [line.strip() for line in file]
+            templateFileName, dummy = QFileDialog.getOpenFileName(self, "Load Template", "", "JSON Files (*.json)")
+            for targetFileName in fileList:
+                applyTemplate(targetFileName=targetFileName, templateFileName=templateFileName)
+                saveLayout(fileName=targetFileName)
+                
+    
     def exportPDFBatch(self):
         setupFileName, dummy = QFileDialog.getOpenFileName(self, "Load Setup", "", "List Files (*.setup)")
         if setupFileName: 

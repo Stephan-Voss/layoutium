@@ -1,8 +1,11 @@
 from PySide6.QtWidgets import QApplication
-from PySide6.QtCore import qInstallMessageHandler, QtMsgType
+from PySide6.QtCore import qInstallMessageHandler
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))  # Ensure current directory is in sys.path to make imports of script files work.
+# Ensure current directory is in sys.path to make imports of script files work.
+path = os.path.dirname(os.path.abspath(__file__))
+if path not in sys.path:
+    sys.path.append(path)
 from MainWindow import MainWindow
 
 def customQtMessageHandler(msgType, context, message):

@@ -17,6 +17,6 @@ class SnapToGridGroup(QGraphicsItemGroup):
                 snappedY = round(newPos.y() / self.gridSize) * self.gridSize
                 print(QPointF(snappedX, snappedY))
                 return QPointF(snappedX, snappedY)
-            except Exception as e:
+            except Exception:
                 pass
         return super().itemChange(change, value)

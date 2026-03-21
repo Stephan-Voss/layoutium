@@ -1,8 +1,6 @@
-from PySide6.QtWidgets import QAbstractItemView, QApplication, QMainWindow, QGraphicsScene, QGraphicsView, QGraphicsTextItem, QPushButton, QVBoxLayout, QWidget, QFileDialog, QLineEdit, QLabel, QFontDialog, QTextBrowser, QGraphicsPixmapItem, QToolBar
-from PySide6.QtGui import  QPen, QColor, QCursor, QPageSize, QPdfWriter, QPagedPaintDevice, QFont, QPainter, QTextCursor, QTextFormat, QTextImageFormat, QTextCharFormat, QImage, QTextDocument, QPixmap, QAction, QKeySequence, QIcon
-from PySide6.QtCore import Qt, QPointF, QByteArray, QUrl, QRectF, QMargins, QSizeF
-import json
-import sys
+from PySide6.QtWidgets import QGraphicsView
+from PySide6.QtGui import  QPainter
+from PySide6.QtCore import Qt
 
 ###
 ###

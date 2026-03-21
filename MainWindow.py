@@ -1,8 +1,5 @@
-from PySide6.QtWidgets import QInputDialog, QMainWindow, QTabWidget, QWidget, QVBoxLayout, QPushButton
+from PySide6.QtWidgets import QInputDialog, QMainWindow, QTabWidget, QPushButton
 from PySide6.QtCore import QTimer
-import os
-import sys
-#sys.path.append(os.path.dirname(os.path.abspath(__file__)))  # Ensure current directory is in sys.path
 from GraphicsEditor import GraphicsEditor
 #from FragmentEditor import FragmentEditor
 
@@ -46,7 +43,7 @@ class MainWindow(QMainWindow):
             
         # Add a new tab with the given widget.
         if selection and selection == "Fragment":
-            widget = FragmentEditor(self)
+            #widget = FragmentEditor(self)
             widget.name = "Frag"
         else:
             widget = GraphicsEditor(self)

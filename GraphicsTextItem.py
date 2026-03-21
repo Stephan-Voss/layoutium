@@ -1,10 +1,6 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsView, QGraphicsItem, QGraphicsTextItem, QPushButton, QVBoxLayout, QWidget, QFileDialog, QLineEdit, QLabel, QFontDialog, QTextBrowser, QGraphicsPixmapItem, QToolBar
-from PySide6.QtGui import  QPen, QColor, QCursor, QTextBlockFormat, QPageSize, QPdfWriter, QPagedPaintDevice, QFont, QPainter, QTextCursor, QTextFormat, QTextImageFormat, QTextCharFormat, QImage, QTextDocument, QPixmap, QAction, QKeySequence, QIcon
-from PySide6.QtCore import Qt, QPointF, QByteArray, QUrl, QRectF, QMargins, QSizeF
-import json
-import time
-import os
-import sys
+from PySide6.QtWidgets import QGraphicsItem, QGraphicsTextItem
+from PySide6.QtGui import  QCursor, QTextBlockFormat, QPainter, QTextCharFormat, QPixmap
+from PySide6.QtCore import Qt, QPointF, QRectF
 #sys.path.append(os.path.dirname(os.path.abspath(__file__)))  # Ensure current directory is in sys.path
 from GraphicsScene import GraphicsScene
 

@@ -1,5 +1,5 @@
 # Layoutium
-A custom graphics and text layout engine for printable components.
+A custom graphics and text layout engine for printable components.  
 [![Code Checker](https://github.com/Stephan-Voss/layoutium/actions/workflows/pythonCI.yml/badge.svg)](https://github.com/Stephan-Voss/layoutium/actions/workflows/pythonCI.yml)
 
 FEATURES  

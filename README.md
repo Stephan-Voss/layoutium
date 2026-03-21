@@ -5,12 +5,12 @@ BUILD STATUS
 [![Code Checker](https://github.com/Stephan-Voss/layoutium/actions/workflows/pythonCI.yml/badge.svg)](https://github.com/Stephan-Voss/layoutium/actions/workflows/pythonCI.yml)
 
 ## Features  
-Layered graphics system (drag & drop).  
-Rich text formatting with CMYK-colors.  
-Layout persistence using serialization.  
-Templates for mass editing. 
-Extendable, modular architecture.  
-Built with Python and PySide6 (Qt).  
+* Layered graphics system (drag & drop).  
+* Rich text formatting with CMYK-colors.  
+* Layout persistence using serialization.  
+* Templates for mass editing. 
+* Extendable, modular architecture.  
+* Built with Python and PySide6 (Qt).  
   
   
 ## Motivation  
@@ -36,6 +36,7 @@ python layoutiumMain.py
 
   
 ## How to use  
+[![Silly icon](/Assets/BleedOnIcon.png)
 Disclaimer: Yes, the icons are silly, but this was made for personal use, and they can easily be replaced by others with similar names. Icons do have tool-tips to make the app usable for others...  
 
   

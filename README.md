@@ -22,11 +22,11 @@ Or to build your own, do this from command line:
 <code>
 pip install -r requirements.txt  
 </code>
-Then (for binary - look in ../build/dist):  
+Then (for binary - look in ../build/dist):
 <code>
 python crossBuild.py  
 </code>
-Or (no nasty build files):  
+Or (no nasty build files):
 <code>
 python layoutiumMain.py  
 </code>

@@ -36,7 +36,7 @@ python layoutiumMain.py
 
   
 ## How to use  
-[![Silly icon](/Assets/BleedOnIcon.png)
+![Silly icon](/Assets/Eyecon-Shown.png)
 Disclaimer: Yes, the icons are silly, but this was made for personal use, and they can easily be replaced by others with similar names. Icons do have tool-tips to make the app usable for others...  
 
   

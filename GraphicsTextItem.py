@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsTextItem
-from PySide6.QtGui import  QCursor, QTextBlockFormat, QPainter, QTextCharFormat, QPixmap
+from PySide6.QtGui import  QCursor, QFont, QTextBlockFormat, QTextCharFormat, QPixmap
 from PySide6.QtCore import Qt, QPointF, QRectF
 #sys.path.append(os.path.dirname(os.path.abspath(__file__)))  # Ensure current directory is in sys.path
 from GraphicsScene import GraphicsScene

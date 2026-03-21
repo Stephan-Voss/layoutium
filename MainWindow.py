@@ -1,7 +1,6 @@
 from PySide6.QtWidgets import QInputDialog, QMainWindow, QTabWidget, QPushButton
 from PySide6.QtCore import QTimer
 from GraphicsEditor import GraphicsEditor
-#from FragmentEditor import FragmentEditor
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -42,10 +41,7 @@ class MainWindow(QMainWindow):
                 return
             
         # Add a new tab with the given widget.
-        if selection and selection == "Fragment":
-            #widget = FragmentEditor(self)
-            widget.name = "Frag"
-        else:
+        if selection and selection == "Editor": 
             widget = GraphicsEditor(self)
             widget.name = "Edith"
         

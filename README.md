@@ -16,7 +16,9 @@ InDesign (expensive) and Scribus are great for rules books, but I needed somethi
 
   
 HOW TO RUN  
-Run packageThis.py to create executable windows file.  
+Pick up one of the releases.
+Or:
+Run generateApp.py to build your own.  
 Or do this:  
 pip install -r requirements.txt  
 python layoutiumMain.py  

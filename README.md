@@ -1,10 +1,10 @@
 # Layoutium
 A custom graphics and text layout engine for printable components.  
 
-## Build Status
+BUILD STATUS  
 [![Code Checker](https://github.com/Stephan-Voss/layoutium/actions/workflows/pythonCI.yml/badge.svg)](https://github.com/Stephan-Voss/layoutium/actions/workflows/pythonCI.yml)
 
-FEATURES  
+## Features  
 Layered graphics system (drag & drop).  
 Rich text formatting with CMYK-colors.  
 Layout persistence using serialization.  
@@ -13,12 +13,12 @@ Extendable, modular architecture.
 Built with Python and PySide6 (Qt).  
   
   
-MOTIVATION  
+## Motivation  
 I wanted a flexible and easy to use WYSIWYG editor for tabletop game component design that could handle CMYK-colors.  
 InDesign (expensive) and Scribus are great for rules books, but I needed something else for quick and flexible iterative development.  
 
   
-HOW TO RUN  
+## How to run  
 Pick up one of the releases.
 
 Or to build your own, do this from command line:
@@ -35,11 +35,11 @@ python layoutiumMain.py
 </code>
 
   
-HOW TO USE  
+## How to use  
 Disclaimer: Yes, the icons are silly, but this was made for personal use, and they can easily be replaced by others with similar names. Icons do have tool-tips to make the app usable for others...  
 
   
-~ Page Setup ~  
+### ~ Page Setup ~  
 Paper size is adjusted by entering pixel values for "Paper W" and "H".  
 You can set a background through the "Insert" menu. The background image does not scale to fill the page.  
 By default, bleed is on and won't allow items to cross its (invisible) border. Bleed is hardcoded at 35 pixels which gives the 3mm industry standard as long as you stick to 300 dpi. Click the green satyr icon to toggle bleed. If a box is refusing to obey bleed, deselect it (by clicking anywhere on the page) and then reselect it.  

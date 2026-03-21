@@ -23,7 +23,7 @@ if __name__ == "__main__":
     
     qInstallMessageHandler(customQtMessageHandler)  # Install the handler
     
-    # Uncomment this when debugging.
+    # DEBUG: Uncomment this when debugging.
     logFile = "debug.log"
     sys.stdout = open(logFile, "w")  # Redirect print output to a file
     sys.stderr = sys.stdout  # Also capture errors

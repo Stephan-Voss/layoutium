@@ -17,10 +17,12 @@ InDesign (expensive) and Scribus are great for rules books, but I needed somethi
   
 HOW TO RUN  
 Pick up one of the releases.
-Or:
-Run generateApp.py to build your own.  
-Or do this:  
+
+Or to build your own, do this from command line:
 pip install -r requirements.txt  
+Then (for binary - look in ../build/dist):  
+python crossBuild.py  
+Or (no nasty build files):  
 python layoutiumMain.py  
 
   

@@ -47,7 +47,7 @@ Snap-to-grid can be enabled by entering a pixel value different from 1 for "Grid
 The page is zoomable through ctrl+scrolling or the egg, dragon and tree icons.  
 
   
-~ Boxes ~  
+### ~ Boxes ~  
 Add a text/image box by hitting the scroll icon.  
 Boxes by default rezise to fit their contents. Hit the map icon to lock the size of the selected box to the pixel values entered for "Box W" and "H". (Click again to unlock.)  
 To position the box, just drag-and-drop or enter pixel values for "Pos X" and "Y".   
@@ -60,13 +60,13 @@ Boxes can be rotated by just typing in the desired angle (in degrees). Caveat: R
 Shortcuts are ctrl +: B(bold), I(italics), U(underline), K(small caps), "Up arrow"(superscript), "Down arrow"(subscript), P(apply color), D(open color selector).  
 
   
-~ Layers ~  
+### ~ Layers ~  
 Each box is its own layer and is shown in the layer list on the right. The currently selected box is highlighted. 
 Click the layer title in the list to rename it.  
 Boxes are moved up/down in the z-direction by drag-and-dropping the layer title in the list.  
 
   
-~ Groups ~  
+### ~ Groups ~  
 Boxes can be grouped by ctrl + clicking the actual items (not the titles in the layer list), and then hitting the spider icon.  
 Destroy the most recent group (which should be the only group) by hitting the sword.  
 Note that groups are intended to be temporary, while collective adjustments of box positions are made.  
@@ -77,12 +77,12 @@ Caveats:
 -While grouped, clicking the group will not properly highlight boxes in the layer list.  
 
   
-~ Persistence ~  
+### ~ Persistence ~  
 Save the current page layout and everything on it as .json file, either from the File menu or by clicking the knight icon.
 The witch icon will load a saved page layout, or you can use the File menu.
 
   
-~ Templates ~  
+### ~ Templates ~  
 You can apply a saved page layout to the current page through Edit in the menu.  
 Warning: The two pages should have the same number of boxes or new boxes will pop up.  
 
@@ -98,7 +98,7 @@ If the target filenames include the string "layoutStrict", the templates box bac
 Warning: This will delete anything currently onscreen!  
 
   
-~ Exporting Files ~  
+### ~ Exporting Files ~  
 Pages can be exported to .pdf (CMYK) or .png (RGB) through the File menu.
 If you have a text file with a simple list of page layout .json files, the items can be processed as a batch job.  
 

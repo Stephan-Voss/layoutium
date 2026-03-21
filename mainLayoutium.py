@@ -22,10 +22,11 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     
     qInstallMessageHandler(customQtMessageHandler)  # Install the handler
-
-#     logFile = "debug.log"
-#     sys.stdout = open(logFile, "w")  # Redirect print output to a file
-#     sys.stderr = sys.stdout  # Also capture errors
+    
+    # Uncomment this when debugging.
+    logFile = "debug.log"
+    sys.stdout = open(logFile, "w")  # Redirect print output to a file
+    sys.stderr = sys.stdout  # Also capture errors
 
     editor = MainWindow()
     editor.show()

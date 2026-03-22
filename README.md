@@ -19,9 +19,9 @@ InDesign (expensive) and Scribus are great for rules books, but I needed somethi
 
   
 ## How to run  
-Pick up one of the executable releases for Windows or Linux (Ubuntu).  
-Or build your own with crossBuild.py (untested on mac). Remember to install requirements(.txt). After build, look for binaries in "../build/dist".  
-Or just run "layoutiumMain.py" (remember requirements).  
+Pick up one of the executable releases for Windows or Linux (Ubuntu). No installation required.  
+Or build your own with "crossBuild.py" in Python 3 (untested on mac). Remember to install requirements(.txt). After build, look for binaries in "../build/dist".  
+Or just run "layoutiumMain.py" (remember requirements) in Python 3.  
 
   
 ## How to use  

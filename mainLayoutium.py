@@ -4,9 +4,6 @@ import os
 import sys
 # Ensure current directory is in sys.path to make imports of script files work.
 sys.path.append( os.path.dirname(os.path.abspath(__file__)) )
-# path = os.path.dirname(os.path.abspath(__file__))
-# if path not in sys.path:
-#     sys.path.append(path)
 from MainWindow import MainWindow
 
 def customQtMessageHandler(msgType, context, message):
@@ -27,7 +24,7 @@ if __name__ == "__main__":
     
     qInstallMessageHandler(customQtMessageHandler)  # Install the handler
     
-    # DEBUG: Uncomment this when debugging.
+    # DEBUG: Consider uncommenting this when debugging.
     logFile = "debug.log"
     sys.stdout = open(logFile, "w")  # Redirect print output to a file
     sys.stderr = sys.stdout  # Also capture errors

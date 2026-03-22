@@ -41,9 +41,8 @@ def buildForCurrentPlatform():
         "--noconfirm", # Overwrite previous builds
         "--clean",
         "--name", appName,
-        "--distpath", "../build/dist",
-        "--workpath", "../build/build",
-        #"--windowed",         # Hide console (for GUI apps). For Linux, replace --windowed with --noconsole? Not sure why this can be omitted...
+        "--distpath", "../build-layoutium/dist",
+        "--workpath", "../build-layoutium/build",
         #"--exclude-module", "PySide6.QtMultimedia",
         #"--exclude-module", "PySide6.QtWebEngineWidgets",
         #"--upx-dir", "upx.exe", # Compress bundled libraries

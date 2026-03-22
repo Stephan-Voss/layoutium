@@ -2,13 +2,17 @@ from PySide6.QtWidgets import QListWidgetItem, QWidgetAction, QToolButton, QHBox
 from PySide6.QtGui import  QKeyEvent, QPageSize, QPdfWriter, QPagedPaintDevice, QFont, QPainter, QTextCursor, QTextImageFormat, QTextCharFormat, QImage, QAction, QKeySequence, QIcon
 from PySide6.QtCore import Qt, QPointF, QUrl, QRectF, QMargins, QSizeF
 import json
-#sys.path.append(os.path.dirname(os.path.abspath(__file__)))  # Ensure current directory is in sys.path
 from GraphicsView import GraphicsView
 from GraphicsScene import GraphicsScene
 from GraphicsTextItem import GraphicsTextItem
 from LayerControl import LayerControl
 from tools import getAssetPath
 
+### 
+### Subapp/widget for page layout and image or pdf creation.
+### Other subapps may be specialized versions of this one.
+### A custom menu, scene and a view to the scene sits within this class.
+### 
 class GraphicsEditor(QWidget):
     def __init__(self, mainWindow):
         super().__init__()
@@ -34,7 +38,7 @@ class GraphicsEditor(QWidget):
         self.mainVerticalLayout = QVBoxLayout()
         self.setLayout(self.mainVerticalLayout)
         
-        # Create a toolbar (simulating a Ribbon)
+        # Create a toolbar
         self.toolbar = QToolBar("Ribbon Toolbar")
         self.mainVerticalLayout.addWidget(self.toolbar)
         self.separator = "  |  "
@@ -43,11 +47,10 @@ class GraphicsEditor(QWidget):
         self.mainVerticalLayout.addLayout(self.contentsHorizontalLayout)
         
         # Scene & View
-        self.scene = GraphicsScene(self)  # Use custom scene
+        self.scene = GraphicsScene(self)
         self.view = GraphicsView(self.scene)
         self.contentsHorizontalLayout.addWidget(self.view)
         
-        ###
         ### ACTIONS
         ### Note: Custom selections of the actions below will be added to the toolbar, depending on the subapp.
         
@@ -90,13 +93,7 @@ class GraphicsEditor(QWidget):
         self.rotateBoxInput.setFixedSize(30, 15)
         self.rotateBoxInput.returnPressed.connect(self.rotateBox)
 
-        # Add a "Delete Item" action with an icon
-#         deleteItemAction = QAction(QIcon("Delete Item Icon.png"), "Delete Item", self)
-#         deleteItemAction.triggered.connect(self.deleteActiveItem)
-        
         # Add a "Resize Scene" action with an icon
-#         resizeSceneAction = QAction(QIcon("Resize Scene Icon.png"), "Resize Scene", self)
-#         resizeSceneAction.triggered.connect(self.resizeScene)
         self.sceneWidthLabel = QLabel("Paper W:")
         self.widthInput = QLineEdit("800")
         self.widthInput.setFixedSize(40, 15)
@@ -145,12 +142,14 @@ class GraphicsEditor(QWidget):
         self.boxPaddingInput = QLineEdit("5")
         self.boxPaddingInput.setFixedSize(30, 15)
         self.boxPaddingInput.returnPressed.connect(self.setBoxPadding)
-
+        
+        # Add a grid action with an icon.
         self.gridSizeLabel = QLabel("Grid:")
         self.gridSizeInput = QLineEdit("10")
         self.gridSizeInput.setFixedSize(30, 15)
         self.gridSizeInput.returnPressed.connect(self.setSnapGridSize)
-
+        
+        # Add a self-updating position action.
         self.posXLabel = QLabel("Pos X:")
         self.posXInput = QLineEdit("0")
         self.posXInput.setFixedSize(40, 15)
@@ -159,10 +158,12 @@ class GraphicsEditor(QWidget):
         self.posYInput = QLineEdit("0")
         self.posYInput.setFixedSize(40, 15)
         self.posYInput.returnPressed.connect(self.setNewPosition)
-
+        
+        # Now activate the desired actions.
         self.setupControls()
         
-
+    
+    # Different subapps will need to overwrite this to activate their own set of custom actions.
     def setupControls(self):
         # Layer Control List
         # Note: A layer list must always be created, or addLayer() will cry, but it doesn't have to be added to the layout.
@@ -222,68 +223,38 @@ class GraphicsEditor(QWidget):
         
         self.resizeScene()
 
-    
+
+    # Create a new GraphicsTextItem and add it to the scene. This is the main object used in the layouts.
     def makeNewGraphicsItem(self):
-        # Create a new GraphicsTextItem and add it to the scene.
         graphicsItem = GraphicsTextItem("Click to drag, double-click to edit.", self.currentFont, "New")
         graphicsItem.setPos(QPointF(50, 50))
         self.addLayer(graphicsItem)
         
-    def addLayer(self, graphicsItem, hasVisibility=True, addToLayerControl=True): #, name, iconPath):
-        """Adds a new item to the scene and layer list."""
+    
+    # Add the newly created GraphicTextItem as a layer to the layer list.
+    def addLayer(self, graphicsItem, addToLayerControl=True): 
+        # Adds a new item to the scene and layer list.
         self.scene.addItem(graphicsItem)
         self.scene.setActiveTextItem(graphicsItem)
         self.activeTextItem = graphicsItem
         graphicsItem.setZValue(self.scene.items().__len__()) # Add item to the foreground.
 
         # Create a layer list entry
-        if hasVisibility:
-            if graphicsItem.visible:
-                eyeconToUse = "Eyecon - Shown.png"
-            else:
-                eyeconToUse = "Eyecon - Hidden.png"
-            visibilityIcon = QIcon(eyeconToUse)
-            listItem = QListWidgetItem(visibilityIcon, graphicsItem.name)
-            
-        else:
-            listItem = QListWidgetItem(graphicsItem.name)
+        listItem = QListWidgetItem(graphicsItem.name)
         listItem.setData(Qt.UserRole, graphicsItem)
-#         listItem.setFlags(listItem.flags() | Qt.ItemIsUserCheckable)  # Make item checkable
-#         listItem.setCheckState(Qt.Checked)  # Set default check state
         
         if addToLayerControl:
             self.layerList.addItem(listItem)
             self.layerList.updateLayers()
         
-        # Connect the itemChanged signal to toggle visibility
-        #self.layerList.itemChanged.connect(lambda item: self.toggleVisibility(item, listItem, graphicsItem)) #Since itemChanged only provides the item that changed, the lambda allows you to capture the current state of the listItem and graphicsItem at the time of the connection.
-
-#     def toggleVisibility(self, item, listItem, graphicsItem):
-#         """Toggle visibility of the graphics item and update the icon."""
-#         if item == listItem:
-#             visible = graphicsItem.visible #toggleVisibility()  # Assuming this method toggles visibility and returns new state
-#             listItem.setIcon(QIcon("Eyecon - Shown.png" if visible else "Eyecon - Hidden.png"))
-#             listItem.setCheckState(Qt.Checked if visible else Qt.Unchecked)  # Update check state
-#             graphicsItem.visible = not graphicsItem.visible # Toggle item state.
-            
-#     # Handle visibility toggling
-#     def toggle():
-#         visible = graphicsItem.toggleVisibility()
-#         listItem.setIcon(QIcon("Eyecon - Shown.png" if visible else "Eyecon - Hidden.png"))
-# 
-#         listItem.setCheckState(Qt.Checked)
-#         listItem.setFlags(listItem.flags() | Qt.ItemIsUserCheckable)
-#         self.layerList.itemChanged.connect(lambda item: toggle() if item == listItem else None)
-
 
     def applyColor(self):
         fakeEvent = QKeyEvent(QKeyEvent.KeyPress, Qt.Key_P, Qt.ControlModifier)
-        #fakeEvent.setModifiers(Qt.ControlModifier)
         self.activeTextItem.keyPressEvent(fakeEvent)
-    
+
+
+    # This is where the custom menus are created. Different subapps will need to overwrite this.
     def createMenu(self, mainWindow):
-#         if mainWindow.menuWidget():
-#             mainWindow.menuWidget().clear()
         menu = mainWindow.menuBar()
         menu.clear()
         
@@ -365,20 +336,16 @@ class GraphicsEditor(QWidget):
         editMenu.addAction(batchTemplateAction)
         
         
-#         deleteItemAction = QAction("Delete Item", self)
-#         deleteItemAction.triggered.connect(self.deleteActiveItem)
-#         editMenu.addAction(deleteItemAction)
-        
-        #mainWindow.updateButtonPosition()
-        
     def setActiveTextItem(self, item):
         self.activeTextItem = item
+        
         
     def resizeScene(self):
         width = int(self.widthInput.text())
         height = int(self.heightInput.text())
         self.scene.setSceneRect(0, 0, width, height) # Update size dynamically
         self.view.setSceneRect(self.scene.sceneRect())
+    
     
     def embedImage(self):
         self.activeTextItem = self.scene.getActiveTextItem()  # Get active item from scene
@@ -387,58 +354,60 @@ class GraphicsEditor(QWidget):
             cursor = self.activeTextItem.textCursor()
             image = QImage(fileName)
             if not image.isNull():
-                #document = self.activeTextItem.document()
-#                 imageFormat = QTextCharFormat()
-#                 imageFormat.setObjectType(QTextFormat.UserObject)
-#                 imageFormat.setProperty(QTextFormat.ImageName, fileName)
-                    # Create a unique URL (using the actual file path)
-                    imageFormat = QTextImageFormat()
-                    imageFormat.setName(QUrl.fromLocalFile(fileName).toString())
-                    # Insert the image with the correct reference
-                    cursor.insertImage(imageFormat)
-                    self.activeTextItem.setTextCursor(cursor)
-#                     cursor.insertImage(image)
-#                     self.activeTextItem.setTextCursor(cursor)
+                # Create a unique URL (using the actual file path)
+                imageFormat = QTextImageFormat()
+                imageFormat.setName(QUrl.fromLocalFile(fileName).toString())
+                # Insert the image with the correct reference
+                cursor.insertImage(imageFormat)
+                self.activeTextItem.setTextCursor(cursor)
+
 
     def setNewPosition(self):
         self.activeTextItem = self.scene.getActiveTextItem()  # Get active item from scene
         self.activeTextItem.setPos(int(self.posXInput.text()), int(self.posYInput.text()))
-            
+
+
+    # Update QLineEdit fields with the active item's position.
     def updatePositionInputs(self):
-        """ Update QLineEdit fields with the active item's position. """
         self.activeTextItem = self.scene.getActiveTextItem()
         if self.activeTextItem:
             pos = self.activeTextItem.pos()
             self.posXInput.setText(str(int(pos.x())))
             self.posYInput.setText(str(int(pos.y())))
     
+    
     def rotateBox(self):
         self.activeTextItem = self.scene.getActiveTextItem()
         self.activeTextItem.setRotation(int(self.rotateBoxInput.text()))
         
+        
+    # Update QLineEdit fields with the active item's rotation.    
     def updateRotationInput(self):
-        """ Update QLineEdit fields with the active item's rotation. """
         self.activeTextItem = self.scene.getActiveTextItem()
         if self.activeTextItem:
             degrees = self.activeTextItem.rotation()
             self.rotateBoxInput.setText(str(int(degrees)))
+            
             
     def updatePaddingInput(self):
         self.activeTextItem = self.scene.getActiveTextItem()
         if self.activeTextItem:
             self.boxPaddingInput.setText(str(int(self.activeTextItem.padding)))
             
+            
+    # Update QLineEdit field with the active item's grid size.
     def updateGridInput(self):
-        """ Update QLineEdit field with the active item's grid size. """
         self.activeTextItem = self.scene.getActiveTextItem()
         if self.activeTextItem:
             self.gridSizeInput.setText(str(int(self.activeTextItem.gridSize)))
+
 
     def updateBoxLockSize(self):
         self.activeTextItem = self.scene.getActiveTextItem()
         if self.activeTextItem:
             self.boxWidthInput.setText(str(int(self.activeTextItem.lockedWidth)))
             self.boxHeightInput.setText(str(int(self.activeTextItem.lockedHeight)))
+        
         
     def setBoxPadding(self):
         self.activeTextItem = self.scene.getActiveTextItem()
@@ -449,8 +418,9 @@ class GraphicsEditor(QWidget):
             self.activeTextItem.padding = paddingDummy
         self.activeTextItem.updatePadding()
             
+            
     def setSnapGridSize(self):
-        self.activeTextItem = self.scene.getActiveTextItem()  # Get active item from scene
+        self.activeTextItem = self.scene.getActiveTextItem()
         gridDummy = int(self.gridSizeInput.text())
         if gridDummy <= 1:
                 self.activeTextItem.gridSize = 1
@@ -459,30 +429,34 @@ class GraphicsEditor(QWidget):
             self.activeTextItem.gridSize =  gridDummy
             self.snapToGrid = True        
 
+
     def lockBox(self):
-         self.activeTextItem = self.scene.getActiveTextItem()  # Get active item from scene
+         self.activeTextItem = self.scene.getActiveTextItem()
          self.activeTextItem.lockedWidth = int(self.boxWidthInput.text())
-         #print(self.boxWidthInput.text())
          self.activeTextItem.lockedHeight = int(self.boxHeightInput.text())
          self.activeTextItem.update()
          self.scene.update()
 
+
     def toggleBoxLock(self):
-        self.activeTextItem = self.scene.getActiveTextItem()  # Get active item from scene
+        self.activeTextItem = self.scene.getActiveTextItem()
         self.activeTextItem.isLocked = not self.activeTextItem.isLocked
         self.activeTextItem.update()
         self.scene.update()
          
+         
     def setBoxBackground(self):
         fileName, _ = QFileDialog.getOpenFileName(self, "Open Image", "", "Images (*.png *.jpg *.jpeg)")
-        self.activeTextItem = self.scene.getActiveTextItem()  # Get active item from scene
+        self.activeTextItem = self.scene.getActiveTextItem()
         if fileName and self.activeTextItem:
             self.activeTextItem.setBackgroundImage(fileName)
     
+    
     def deleteBoxBackground(self):
-        self.activeTextItem = self.scene.getActiveTextItem()  # Get active item from scene
+        self.activeTextItem = self.scene.getActiveTextItem()
         if self.activeTextItem:
-            self.activeTextItem.setBackgroundImage(None) #backgroundPixmap = None
+            self.activeTextItem.setBackgroundImage(None)
+            
             
     def setSceneBackground(self, fileName=None):
         # Load and set background image for the scene
@@ -490,14 +464,14 @@ class GraphicsEditor(QWidget):
             fileName, uselessDummy = QFileDialog.getOpenFileName(self, "Open Image", "", "Images (*.png *.jpg *.jpeg)")
         self.scene.backgroundPixmap = fileName
         self.scene.update()
-        #self.scene.drawBackground(QPainter(), self.scene.sceneRect())
-        #self.scene.setBackgroundBrush(QBrush(pixmap))
+
 
     def deleteSceneBackground(self):
         self.scene.backgroundPixmap = None
     
+    
     def selectFont(self):
-        self.activeTextItem = self.scene.getActiveTextItem()  # Get active item from scene
+        self.activeTextItem = self.scene.getActiveTextItem()
         if not self.activeTextItem:
             return
 
@@ -507,7 +481,7 @@ class GraphicsEditor(QWidget):
 
             cursor = self.activeTextItem.textCursor()
             if not cursor.hasSelection():
-                cursor.select(QTextCursor.WordUnderCursor)  # Ensure at least a word is selected
+                cursor.select(QTextCursor.WordUnderCursor)  # Ensure at least one word is selected
 
             # Store selection range
             selectionStart = cursor.selectionStart()
@@ -537,28 +511,6 @@ class GraphicsEditor(QWidget):
             cursor.endEditBlock()  # End block edit for efficiency
             self.activeTextItem.setTextCursor(cursor)  # Restore cursor position
 
-    def select_fontOLD(self):
-        self.activeTextItem = self.scene.getActiveTextItem()  # Get active item from scene
-        ok, font = QFontDialog.getFont(self.currentFont)
-        if ok:
-            self.currentFont = font
-            if self.activeTextItem:
-                cursor = self.activeTextItem.textCursor()
-                currentFormat = cursor.charFormat()  # Get current formatting
-                
-                fmt = QTextCharFormat()
-                fmt.setFont(font)
-
-                fmt.setFontWeight(currentFormat.fontWeight())  # Preserve bold
-                fmt.setFontItalic(currentFormat.fontItalic())  # Preserve italic
-                fmt.setFontUnderline(currentFormat.fontUnderline())  # Preserve underline
-                fmt.setFontCapitalization(currentFormat.fontCapitalization())  # Preserve small caps
-
-                cursor.mergeCharFormat(fmt)
-                self.activeTextItem.setTextCursor(cursor)
-    
-#     def saveLayout(self):
-#         self.saveLayoutAs(fileName=self.fileName)
         
     def saveLayout(self, fileName=None):
         if not fileName:
@@ -573,6 +525,7 @@ class GraphicsEditor(QWidget):
                     layoutData.append(item.toDict())
             with open(fileName, "w", encoding="utf-8") as file:
                 json.dump(layoutData, file, indent=4)
+
 
     def loadLayout(self, fileName=None):
         if not fileName:
@@ -590,11 +543,8 @@ class GraphicsEditor(QWidget):
                 self.widthInput.setText( str(int(layoutData[1])) )
                 self.heightInput.setText( str(int(layoutData[2])) )
                 self.resizeScene()
-#                 for itemData in layoutData:
-                for i in range(3,layoutDataLength):
+                for i in range(3,layoutDataLength): # First 3 are not boxes.
                     self.addLayer(GraphicsTextItem.fromDict(layoutData[i]))
-#                     textItem = GraphicsTextItem.fromDict(itemData)
-#                     self.scene.addItem(textItem)
             self.activeTextItem = None # Removes reference to old, no longer existing object.
             self.scene.setActiveTextItem(self.activeTextItem)
 
@@ -617,12 +567,9 @@ class GraphicsEditor(QWidget):
         if templateFileName:
             with open(templateFileName, "r", encoding="utf-8") as file:
                 layoutTemplate = json.load(file)
-#                 if not targetFileName:
-#                     targetFileName, dummy = QFileDialog.getOpenFileName(self, "Load Layout", "", "JSON Files (*.json)")
                 if targetFileName:
                     self.loadLayout(fileName=targetFileName)
                 sceneItems = self.scene.items()
-                #print(sceneItems)
                 noCurrentItems = 0
                 if sceneItems:
                     noCurrentItems = len(sceneItems)
@@ -633,24 +580,16 @@ class GraphicsEditor(QWidget):
                 self.resizeScene()
                 layoutTemplate = layoutTemplate[3:] #"3" because the first three list entries are scene background, height and width.
                 noTemplateItems = len(layoutTemplate)
-                #print(noTemplateItems)
-                #print(noCurrentItems)
                 for t in range(noTemplateItems): 
                     if t > noCurrentItems: #There are more items in the template than in the current scene.
-                        #print("t: " + str(t))
                         self.makeNewGraphicsItem()
                         sceneItems = self.scene.items()
-#                     else:
-                        #print(templateItem["font"])
                     templateItem = layoutTemplate[t]
                     templateKeys = templateItem.keys()
-                    #i = t-1
                     if "font" in templateKeys:
                         font = QFont()
                         font.fromString(templateItem["font"])
                         sceneItems[t].setFont(font)
-#                         sceneItems[t].x = templateItem["x"]
-#                         sceneItems[t].y = templateItem["y"]
                     if "x" in templateKeys:
                         x = templateItem["x"]
                     else:
@@ -699,8 +638,6 @@ class GraphicsEditor(QWidget):
                 fileList = [line.strip() for line in file]
             setupInfo = fileList[0].split(";")
             self.pdfFileName = setupInfo[0].split("=")[1].strip()
-            #self.pdfSize = setupInfo[1].split("=")[1].strip()
-            #self.pdfVersion = setupInfo[2].split("=")[1].strip()
             self.pdfResolution = int( setupInfo[1].split("=")[1].strip() )
             colorModel = setupInfo[2].split("=")[1].strip()
             if colorModel == "CMYK":
@@ -720,15 +657,13 @@ class GraphicsEditor(QWidget):
 
     ### Prints the QGraphicsScene to a PDF file with vector text and embedded CMYK images.
     def exportPDF(self, fileList=[None], separator = 0):
-        #pdfWriter.setPageSize(QPageSize(QPageSize.Letter))
         pdfWriter = QPdfWriter(self.pdfFileName)
         pdfWriter.setPdfVersion(self.pdfVersion)
         pdfWriter.setResolution(self.pdfResolution)
         pdfWriter.setColorModel(self.pdfColorModel)
         self.pdfSize = QSizeF(self.pdfSizeX, self.pdfSizeY)
         pdfWriter.setPageSize( QPageSize(self.pdfSize, self.pdfUnit) )
-        pdfWriter.setPageMargins(QMargins(0, 0, 0, 0))#, QtGui.QPageLayout.Millimeter)
-        #pdfWriter.setPageMargins(QRectF(0, 0, 0, 0))  # No margins
+        pdfWriter.setPageMargins(QMargins(0, 0, 0, 0))
         painter = QPainter(pdfWriter)
         # Define where to place the scene on the PDF page
         posX = 0  # Adjust left margin (in points)
@@ -739,10 +674,6 @@ class GraphicsEditor(QWidget):
         sceneHeight = 0
         previousSceneWidth = 0
         previousSceneHeight = 0
-        #separator = 5
-        #noFiles = len(fileList)
-        #for e in range(1,noFiles):
-         #   entry = fileList[e]
         
         for entry in fileList:
             if entry:
@@ -762,6 +693,7 @@ class GraphicsEditor(QWidget):
             if self.scene.cutBleed:
                 bleed = 35 #int(3/25,4*300)
                 sourceRect = sourceRect.adjusted(bleed, bleed, -bleed, -bleed)
+                
             # Define the target rectangle where the scene will be drawn
             sceneWidth = self.scene.sceneRect().width()
             sceneHeight = self.scene.sceneRect().height()
@@ -795,11 +727,7 @@ class GraphicsEditor(QWidget):
                 previousSceneHeight = sceneHeight
 
             targetRect = QRectF(posX, posY, sceneWidth, sceneHeight)
-            #targetRect = QRectF(0, 0, sceneWidth, sceneHeight)
-            #painter.save()  # Save current transformation state
-            #painter.translate(marginX, marginY)  # Move the scene to the specified position
             self.scene.render(painter, targetRect, sourceRect) # targetRect → Defines where on the PDF page the scene should be drawn. sourceRect → Defines which part of the scene should be drawn.
-            #painter.restore()
         painter.end()
         print("Export to PDF complete: " + self.pdfFileName)
 

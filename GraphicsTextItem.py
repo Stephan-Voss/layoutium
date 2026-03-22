@@ -1,18 +1,16 @@
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsTextItem
 from PySide6.QtGui import  QCursor, QFont, QTextBlockFormat, QTextCharFormat, QPixmap
 from PySide6.QtCore import Qt, QPointF, QRectF
-#sys.path.append(os.path.dirname(os.path.abspath(__file__)))  # Ensure current directory is in sys.path
 from GraphicsScene import GraphicsScene
 
 ###
-###
+### The central boxes are of this type and can contain text and images.
 ###
 class GraphicsTextItem(QGraphicsTextItem):
     def __init__(self, text, font, name=""):
         super().__init__(text)
         self.setTextInteractionFlags(Qt.TextEditorInteraction) # Enable typing
         self.setFlags(QGraphicsTextItem.ItemIsSelectable | QGraphicsTextItem.ItemIsMovable)  # Allow selection
-        #self.setFlag(QGraphicsTextItem.ItemIsMovable)
         self.setCursor(QCursor(Qt.OpenHandCursor))  # Change cursor to hand when hovering
         self._dragging = False  # Track if dragging
         self._drag_start_pos = QPointF()
@@ -28,15 +26,14 @@ class GraphicsTextItem(QGraphicsTextItem):
         self.gridSize = 1
         self.snapToGrid = True
         self.padding = 5
-#         self.selectedCmykColor = QColor.fromCmyk(0, 0, 0, 0)  # Default black
-    
+
+
+    # Get the QTextDocument and set document margins
     def updatePadding(self):
-        # Get the QTextDocument and set document margins
         doc = self.document()
         doc.setDocumentMargin(self.padding)
         self.setDocument(doc)  # Apply the document back
-        #self.update()
-        #self.scene().update()
+        
         
     def itemChange(self, change, value):
         if change == QGraphicsItem.ItemPositionChange:
@@ -50,43 +47,45 @@ class GraphicsTextItem(QGraphicsTextItem):
                 return QPointF(snappedX, snappedY)
         return super().itemChange(change, value)
 
+
     def boundingRect(self):
         return QRectF(0, 0, self.lockedWidth, self.lockedHeight) if self.isLocked else super().boundingRect()
+
     
+    # Notify the scene that this item was clicked 
     def mousePressEvent(self, event):
-        # Notify the scene that this item was clicked 
         scene = self.scene()  # Get the scene
         if isinstance(scene, GraphicsScene):  # Ensure it's our scene
             scene.setActiveTextItem(self)  # Set this item as active
+            
         # Handle selection correctly
         if event.button() == Qt.LeftButton:
             if event.modifiers() == Qt.ControlModifier:
                 # Toggle selection if Ctrl is held
                 self.setSelected(not self.isSelected())
-                #scene.selectedItems.append(self)
             else:
                 # Deselect others and select only this one
                 scene.clearSelection()  # Clear all other selections
                 self.setSelected(True)
+                
         # Start dragging when the item is clicked (but not double-clicked).
         if event.button() == Qt.LeftButton and not event.modifiers() == Qt.ControlModifier:
             self._dragging = True
             self._drag_start_pos = event.scenePos() - self.pos()  # Store offset
             self.setCursor(QCursor(Qt.ClosedHandCursor))  # Change cursor to grabbing
         super().mousePressEvent(event)
-        #self.setSelected(True)  # Mark this item as selected
+        
         # Find corresponding layer list item and select it
         for i in range(self.scene().layerList.count()):
             listItem = self.scene().layerList.item(i)
             if listItem.data(Qt.UserRole) == self:  # Compare stored reference
                 self.scene().layerList.setCurrentItem(listItem)
                 break
+            
 
+    # Move the item as long as the mouse is pressed.
     def mouseMoveEvent(self, event):
-        # Move the item as long as the mouse is pressed.
         if self._dragging:
-#             newPos = event.scenePos() - self._drag_start_pos
-#             self.setPos(newPos)
             scene = self.scene()
             if scene:
                 newPos = event.scenePos() - self._drag_start_pos
@@ -107,17 +106,16 @@ class GraphicsTextItem(QGraphicsTextItem):
                 self.setPos(newX, newY)
         super().mouseMoveEvent(event)
 
+
+    # Stop dragging when the mouse is released.
     def mouseReleaseEvent(self, event):
-        # Stop dragging when the mouse is released.
         self._dragging = False
         self.setCursor(QCursor(Qt.OpenHandCursor))  # Reset cursor
         super().mouseReleaseEvent(event)
         
+    
+    # Enable text editing when double-clicked.
     def mouseDoubleClickEvent(self, event):
-#         cursor = self.textCursor()
-#         cursor.movePosition(QTextCursor.End)
-#         self.setTextCursor(cursor)
-        # Enable text editing when double-clicked.
         self.setTextInteractionFlags(Qt.TextEditorInteraction)  # Enable editing
         self.setFocus()  # Focus on the text box
         parent = self.scene().views()[0].parent()
@@ -125,9 +123,10 @@ class GraphicsTextItem(QGraphicsTextItem):
             parent.activeTextItem = self
         super().mouseDoubleClickEvent(event)
 
+    # Here we define what is stored, when we save layouts.
     def toDict(self):
         return {
-            "text": self.toHtml(), #toPlainText(),
+            "text": self.toHtml(),
             "font": self.font().toString(),
             "x": self.x(),
             "y": self.y(),
@@ -143,14 +142,13 @@ class GraphicsTextItem(QGraphicsTextItem):
             "rotation": self.rotation()
             }
      
+     
+    # Used for loading layouts.
     @staticmethod
     def fromDict(data):
         font = QFont()
         font.fromString(data["font"])
-        #item = GraphicsTextItem(data["text"], font)
         item = GraphicsTextItem("", font)
-        #self.textEdit.setHtml(data.get("text", ""))
-        #item.setHtml(data.get("text", ""))
         item.setHtml(data["text"])
         item.setPos(QPointF(data["x"], data["y"]))
         item.name = data["name"]
@@ -167,6 +165,7 @@ class GraphicsTextItem(QGraphicsTextItem):
         item.setRotation(data["rotation"])
         return item
     
+    # Background image for box.
     def setBackgroundImage(self, filePath):
         self.backgroundImagePath = filePath
         if filePath:
@@ -175,10 +174,12 @@ class GraphicsTextItem(QGraphicsTextItem):
             self.backgroundImage = None
         self.update()
 
+
     def paint(self, painter, option, widget):
         if self.backgroundImage:
             painter.drawPixmap(self.boundingRect().toRect(), self.backgroundImage)
         super().paint(painter, option, widget)
+    
     
     # Allow shortcuts to set text formatting.
     def keyPressEvent(self, event):
@@ -188,6 +189,7 @@ class GraphicsTextItem(QGraphicsTextItem):
             currentFormat = cursor.charFormat()
             blockFmt = QTextBlockFormat()
             useBlockFormat = False
+            
             if event.key() == Qt.Key_B:
                 fmt.setFontWeight(QFont.Bold if not cursor.charFormat().fontWeight() == QFont.Bold else QFont.Normal)
             elif event.key() == Qt.Key_I:
@@ -227,10 +229,8 @@ class GraphicsTextItem(QGraphicsTextItem):
             else:
                 super().keyPressEvent(event)
                 return
+            
             if useBlockFormat:
-                # **Critical Fix:** Ensure text stays within the bounding box
-#                 if self.isLocked:
-#                     self.document().setTextWidth(self.lockedWidth)
                 cursor.mergeBlockFormat(blockFmt)  # Apply format
                 self.setTextCursor(cursor)  # Ensure changes take effect
                 self.document().adjustSize()  # Force document layout update
@@ -240,10 +240,5 @@ class GraphicsTextItem(QGraphicsTextItem):
                 self.setTextCursor(cursor)
         else:
             super().keyPressEvent(event)
-                
-    def toggleVisibility(self):
-        """Toggle visibility and return the new state."""
-        self.setVisible(not self.isVisible())
-        self.visible = self.isVisible()
-        return self.visible
     
+        

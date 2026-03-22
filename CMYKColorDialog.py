@@ -2,6 +2,9 @@ from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout, QDialog, QPushButton, QL
 from PySide6.QtGui import QColor
 from PySide6.QtCore import Qt, Signal
 
+###
+### Used for selecting CMYK colors to be applied elsewehere.
+### 
 class CMYKColorDialog(QDialog):
     colorSelected = Signal(QColor)  # Signal to send selected color
 
@@ -51,7 +54,7 @@ class CMYKColorDialog(QDialog):
         layout.addLayout(btnLayout)
         self.setLayout(layout)
 
-        # Update preview when sliders change
+        # Call updatePreview when sliders change
         for slider in self.sliders.values():
             slider.valueChanged.connect(self.updatePreview)
 
@@ -59,12 +62,12 @@ class CMYKColorDialog(QDialog):
         label.setText(f"{color}: {value}")
 
     def getSelectedColor(self):
-        """Returns the selected CMYK color as a QColor."""
+        # Returns the selected CMYK color as a QColor.
         c, m, y, k = [self.sliders[color].value() for color in ["C", "M", "Y", "K"]]
         return QColor.fromCmyk(c, m, y, k)
 
     def updatePreview(self):
-        """Updates the preview box color."""
+        # Updates the preview box color.
         color = self.getSelectedColor()
         r, g, b, _ = color.getRgb()
         self.colorPreview.setStyleSheet(f"background-color: rgb({r},{g},{b}); border: 1px solid gray;")

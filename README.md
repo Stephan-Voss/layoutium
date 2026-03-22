@@ -24,7 +24,8 @@ Or build your own with "crossBuild.py" and Python 3 (untested on mac). Remember 
 Alternatively, just run "layoutiumMain.py" (remember requirements) with Python 3.  
 
   
-## How to use  
+## How to use
+The general idea is to create a page layout for, say, a card and then reuse the layout for similar cards. When adjustments need to be made to many cards, they are first applied to a template, which is then used to update all the cards. The updated cards can then be mass exported as images or a pdf.  
 ![Silly icon](/Assets/Eyecon-Shown.png)
 Disclaimer: Yes, the icons are silly, but this was made for personal use, and they can easily be replaced by others with similar names. Icons do have tool-tips to make the app usable for others...  
 
@@ -118,3 +119,12 @@ fileName = card3.layout.json
 imageResolution is in dpi.  
 Anything but CMYK for colorModel will result in RGB. Images are saved as .jpeg for CMYK and .png for RGB (to allow transparency).  
 Warning: This will delete anything currently onscreen!  
+
+
+## Design Overview
+mainLayoutium --> MainWindow --> GraphicsEditor (widget & menu) --> GraphicsScene + GraphicsView + GraphicsTextItem (boxes)  
+
+### Planned  
+Visibility toggling (boxes)  
+GraphicsEditor --> Specialized Editors/Widgets  
+

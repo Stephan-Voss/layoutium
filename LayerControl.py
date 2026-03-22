@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QListWidget, QMenu, QLineEdit
-from PySide6.QtCore import Qt, QPoint, QRect, QSize
+from PySide6.QtCore import Qt, QPoint
 from PySide6.QtGui import  QAction
 
 ###
@@ -82,10 +82,6 @@ class LayerControl(QListWidget):
     def mousePressEvent(self, event):
         item = self.itemAt(event.pos())
         if item:
-             # Get the size of the icon
-            iconSize = item.icon().actualSize(QSize(20, 20))  # Adjust the size as necessary
-            # Get the rect of the item
-            itemRect = self.visualItemRect(item)
             graphicsItem = item.data(Qt.UserRole)  # Retrieve the associated graphics item
             if not event.modifiers() == Qt.ControlModifier:
                 self.scene.clearSelection() # Apparently, the scene will remember the selections unless we do this.

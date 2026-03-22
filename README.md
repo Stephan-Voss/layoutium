@@ -1,42 +1,36 @@
 # Layoutium
-A custom graphics and text layout engine for printable components.
+A custom text editor and graphics layout engine for printable components.  
 
-FEATURES  
-Layered graphics system (drag & drop).  
-Rich text formatting with CMYK-colors.  
-Layout persistence using serialization.  
-Templates for mass editing. 
-Extendable, modular architecture.  
-Built with Python and PySide6 (Qt).  
+BUILD STATUS  
+[![Code Checker](https://github.com/Stephan-Voss/layoutium/actions/workflows/pythonCI.yml/badge.svg)](https://github.com/Stephan-Voss/layoutium/actions/workflows/pythonCI.yml)
+
+## Features  
+* Layered graphics system (drag & drop).  
+* Rich text formatting with CMYK-colors.  
+* Layout persistence using serialization.  
+* Templates for mass editing. 
+* Extendable, modular architecture.  
+* Built with Python and PySide6 (Qt).  
   
   
-MOTIVATION  
+## Motivation  
 I wanted a flexible and easy to use WYSIWYG editor for tabletop game component design that could handle CMYK-colors.  
 InDesign (expensive) and Scribus are great for rules books, but I needed something else for quick and flexible iterative development.  
 
   
-HOW TO RUN  
-Pick up one of the releases.
-
-Or to build your own, do this from command line:
-<code>
-pip install -r requirements.txt  
-</code>
-Then (for binary - look in ../build/dist):
-<code>
-python crossBuild.py  
-</code>
-Or (no nasty build files):
-<code>
-python layoutiumMain.py  
-</code>
+## How to run  
+Pick up one of the executable releases for Windows or Linux (Ubuntu). No installation required. Note that for linux, after downloading the executable you need to right-click it, choose "Properties" and then activate "Executable as Program".  
+Or build your own with "crossBuild.py" and Python 3 (untested on mac). Remember to install requirements(.txt). After build, look for binaries in "../build/dist".  
+Alternatively, just run "layoutiumMain.py" (remember requirements) with Python 3.  
 
   
-HOW TO USE  
+## How to use
+The general idea is to create a page layout for, say, a card and then reuse the layout for similar cards. When adjustments need to be made to many cards, they are first applied to a template, which is then used to update all the cards. The updated cards can then be mass exported as images or a pdf.  
+![Silly icon](/Assets/Eyecon-Shown.png)
 Disclaimer: Yes, the icons are silly, but this was made for personal use, and they can easily be replaced by others with similar names. Icons do have tool-tips to make the app usable for others...  
 
   
-~ Page Setup ~  
+### ~ Page Setup ~  
 Paper size is adjusted by entering pixel values for "Paper W" and "H".  
 You can set a background through the "Insert" menu. The background image does not scale to fill the page.  
 By default, bleed is on and won't allow items to cross its (invisible) border. Bleed is hardcoded at 35 pixels which gives the 3mm industry standard as long as you stick to 300 dpi. Click the green satyr icon to toggle bleed. If a box is refusing to obey bleed, deselect it (by clicking anywhere on the page) and then reselect it.  
@@ -44,7 +38,7 @@ Snap-to-grid can be enabled by entering a pixel value different from 1 for "Grid
 The page is zoomable through ctrl+scrolling or the egg, dragon and tree icons.  
 
   
-~ Boxes ~  
+### ~ Boxes ~  
 Add a text/image box by hitting the scroll icon.  
 Boxes by default rezise to fit their contents. Hit the map icon to lock the size of the selected box to the pixel values entered for "Box W" and "H". (Click again to unlock.)  
 To position the box, just drag-and-drop or enter pixel values for "Pos X" and "Y".   
@@ -57,13 +51,13 @@ Boxes can be rotated by just typing in the desired angle (in degrees). Caveat: R
 Shortcuts are ctrl +: B(bold), I(italics), U(underline), K(small caps), "Up arrow"(superscript), "Down arrow"(subscript), P(apply color), D(open color selector).  
 
   
-~ Layers ~  
+### ~ Layers ~  
 Each box is its own layer and is shown in the layer list on the right. The currently selected box is highlighted. 
 Click the layer title in the list to rename it.  
 Boxes are moved up/down in the z-direction by drag-and-dropping the layer title in the list.  
 
   
-~ Groups ~  
+### ~ Groups ~  
 Boxes can be grouped by ctrl + clicking the actual items (not the titles in the layer list), and then hitting the spider icon.  
 Destroy the most recent group (which should be the only group) by hitting the sword.  
 Note that groups are intended to be temporary, while collective adjustments of box positions are made.  
@@ -74,12 +68,12 @@ Caveats:
 -While grouped, clicking the group will not properly highlight boxes in the layer list.  
 
   
-~ Persistence ~  
+### ~ Persistence ~  
 Save the current page layout and everything on it as .json file, either from the File menu or by clicking the knight icon.
 The witch icon will load a saved page layout, or you can use the File menu.
 
   
-~ Templates ~  
+### ~ Templates ~  
 You can apply a saved page layout to the current page through Edit in the menu.  
 Warning: The two pages should have the same number of boxes or new boxes will pop up.  
 
@@ -95,7 +89,7 @@ If the target filenames include the string "layoutStrict", the templates box bac
 Warning: This will delete anything currently onscreen!  
 
   
-~ Exporting Files ~  
+### ~ Exporting Files ~  
 Pages can be exported to .pdf (CMYK) or .png (RGB) through the File menu.
 If you have a text file with a simple list of page layout .json files, the items can be processed as a batch job.  
 
@@ -125,3 +119,11 @@ fileName = card3.layout.json
 imageResolution is in dpi.  
 Anything but CMYK for colorModel will result in RGB. Images are saved as .jpeg for CMYK and .png for RGB (to allow transparency).  
 Warning: This will delete anything currently onscreen!  
+
+
+## Design Overview
+mainLayoutium --> MainWindow --> GraphicsEditor (widget & menu) --> GraphicsScene + GraphicsView + GraphicsTextItem (boxes)  
+
+### Planned  
+GraphicsEditor --> Specialized Editors/Widgets for MainWindow  
+

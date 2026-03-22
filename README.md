@@ -1,5 +1,5 @@
 # Layoutium
-A custom graphics and text layout engine for printable components.  
+A custom text editor and graphics layout engine for printable components.  
 
 BUILD STATUS  
 [![Code Checker](https://github.com/Stephan-Voss/layoutium/actions/workflows/pythonCI.yml/badge.svg)](https://github.com/Stephan-Voss/layoutium/actions/workflows/pythonCI.yml)
@@ -125,6 +125,5 @@ Warning: This will delete anything currently onscreen!
 mainLayoutium --> MainWindow --> GraphicsEditor (widget & menu) --> GraphicsScene + GraphicsView + GraphicsTextItem (boxes)  
 
 ### Planned  
-Visibility toggling (boxes)  
-GraphicsEditor --> Specialized Editors/Widgets  
+GraphicsEditor --> Specialized Editors/Widgets for MainWindow  
 

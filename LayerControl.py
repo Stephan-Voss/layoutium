@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QListWidget, QMenu, QLineEdit
 from PySide6.QtCore import Qt, QPoint, QRect, QSize
-from PySide6.QtGui import  QAction, QIcon
+from PySide6.QtGui import  QAction
 
 ###
 ### A list widget that allows reordering and deletion of layers (boxes).
@@ -86,9 +86,6 @@ class LayerControl(QListWidget):
             iconSize = item.icon().actualSize(QSize(20, 20))  # Adjust the size as necessary
             # Get the rect of the item
             itemRect = self.visualItemRect(item)
-            # Check if the icon area was clicked
-            iconRect = QRect(itemRect.topLeft(), iconSize)
-            #iconRect.moveCenter(itemRect.center())  # Center the icon rect within the item rect
             graphicsItem = item.data(Qt.UserRole)  # Retrieve the associated graphics item
             if not event.modifiers() == Qt.ControlModifier:
                 self.scene.clearSelection() # Apparently, the scene will remember the selections unless we do this.

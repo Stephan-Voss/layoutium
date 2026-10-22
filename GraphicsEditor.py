@@ -8,11 +8,11 @@ from GraphicsTextItem import GraphicsTextItem
 from LayerControl import LayerControl
 from tools import getAssetPath
 
-### 
+###
 ### Subapp/widget for page layout and image or pdf creation.
 ### Other subapps may be specialized versions of this one.
 ### A custom menu, scene and a view to the scene sits within this class.
-### 
+###
 class GraphicsEditor(QWidget):
     def __init__(self, mainWindow):
         super().__init__()
@@ -37,23 +37,23 @@ class GraphicsEditor(QWidget):
         # Main layout
         self.mainVerticalLayout = QVBoxLayout()
         self.setLayout(self.mainVerticalLayout)
-        
+
         # Create a toolbar
         self.toolbar = QToolBar("Ribbon Toolbar")
         self.mainVerticalLayout.addWidget(self.toolbar)
         self.separator = "  |  "
-        
+
         self.contentsHorizontalLayout = QHBoxLayout()
         self.mainVerticalLayout.addLayout(self.contentsHorizontalLayout)
-        
+
         # Scene & View
         self.scene = GraphicsScene(self)
         self.view = GraphicsView(self.scene)
         self.contentsHorizontalLayout.addWidget(self.view)
-        
+
         ### ACTIONS
         ### Note: Custom selections of the actions below will be added to the toolbar, depending on the subapp.
-        
+
         # Add a "Save Layout" action with an icon
         self.saveLayoutAction = QAction(QIcon(getAssetPath("Assets", "Save Layout Icon.png")), "Save Layout", self)
         self.saveLayoutAction.triggered.connect(self.saveLayout)
@@ -61,7 +61,7 @@ class GraphicsEditor(QWidget):
         # Add a "Load Layout" action with an icon
         self.loadLayoutAction = QAction(QIcon(getAssetPath("Assets", "Load Layout Icon.png")), "Load Layout", self)
         self.loadLayoutAction.triggered.connect(self.loadLayout)
-    
+
         # Add an "Add Text Box" action with an icon
         self.addTextboxAction = QAction(QIcon(getAssetPath("Assets", "Add Box Icon.png")), "Add Box", self)
         self.addTextboxAction.triggered.connect(self.makeNewGraphicsItem)
@@ -73,7 +73,7 @@ class GraphicsEditor(QWidget):
         # Add a "Select Font" action with an icon
         self.selectFontAction = QAction(QIcon(getAssetPath("Assets", "Select Font Icon.png")), "Select Font", self)
         self.selectFontAction.triggered.connect(self.selectFont)
-        
+
         # Color Preview Box
         self.colorBox = QToolButton()
         self.colorBox.setFixedSize(20, 20)
@@ -102,7 +102,7 @@ class GraphicsEditor(QWidget):
         self.heightInput = QLineEdit("600")
         self.heightInput.setFixedSize(40, 15)
         self.heightInput.returnPressed.connect(self.resizeScene)
-        
+
         # Add a "Toggle Bleed" action with an icon
         if self.scene.cutBleed:
             self.bleedIcon = getAssetPath("Assets", "Bleed Off Icon.png")
@@ -120,7 +120,7 @@ class GraphicsEditor(QWidget):
         self.zoomOutAction.triggered.connect(self.view.zoomOut)
         self.zoomResetAction = QAction(QIcon(getAssetPath("Assets", "Reset Zoom Icon.png")), "Reset Zoom", self)
         self.zoomResetAction.triggered.connect(self.view.resetZoom)
-        
+
         # Add Grouping/Ungrouping
         self.groupAction = QAction(QIcon(getAssetPath("Assets", "Create Group Icon.png")), "Create Group", self)
         self.groupAction.triggered.connect(self.scene.groupSelectedItems)
@@ -142,13 +142,13 @@ class GraphicsEditor(QWidget):
         self.boxPaddingInput = QLineEdit("5")
         self.boxPaddingInput.setFixedSize(30, 15)
         self.boxPaddingInput.returnPressed.connect(self.setBoxPadding)
-        
+
         # Add a grid action with an icon.
         self.gridSizeLabel = QLabel("Grid:")
         self.gridSizeInput = QLineEdit("10")
         self.gridSizeInput.setFixedSize(30, 15)
         self.gridSizeInput.returnPressed.connect(self.setSnapGridSize)
-        
+
         # Add a self-updating position action.
         self.posXLabel = QLabel("Pos X:")
         self.posXInput = QLineEdit("0")
@@ -158,11 +158,11 @@ class GraphicsEditor(QWidget):
         self.posYInput = QLineEdit("0")
         self.posYInput.setFixedSize(40, 15)
         self.posYInput.returnPressed.connect(self.setNewPosition)
-        
+
         # Now activate the desired actions.
         self.setupControls()
-        
-    
+
+
     # Different subapps will need to overwrite this to activate their own set of custom actions.
     def setupControls(self):
         # Layer Control List
@@ -171,7 +171,7 @@ class GraphicsEditor(QWidget):
         self.layerList.setFixedWidth(100)
         self.contentsHorizontalLayout.addWidget(self.layerList, 1)
         self.scene.layerList = self.layerList
-        
+
         # Add actions to the toolbar
         self.toolbar.addAction(self.loadLayoutAction)
         self.toolbar.addAction(self.saveLayoutAction)
@@ -220,7 +220,7 @@ class GraphicsEditor(QWidget):
         self.toolbar.addWidget(self.posXInput)
         self.toolbar.addWidget(self.posYLabel)
         self.toolbar.addWidget(self.posYInput)
-        
+
         self.resizeScene()
 
 
@@ -229,10 +229,10 @@ class GraphicsEditor(QWidget):
         graphicsItem = GraphicsTextItem("Click to drag, double-click to edit.", self.currentFont, "New")
         graphicsItem.setPos(QPointF(50, 50))
         self.addLayer(graphicsItem)
-        
-    
+
+
     # Add the newly created GraphicTextItem as a layer to the layer list.
-    def addLayer(self, graphicsItem, addToLayerControl=True): 
+    def addLayer(self, graphicsItem, addToLayerControl=True):
         # Adds a new item to the scene and layer list.
         self.scene.addItem(graphicsItem)
         self.scene.setActiveTextItem(graphicsItem)
@@ -242,11 +242,11 @@ class GraphicsEditor(QWidget):
         # Create a layer list entry
         listItem = QListWidgetItem(graphicsItem.name)
         listItem.setData(Qt.UserRole, graphicsItem)
-        
+
         if addToLayerControl:
             self.layerList.addItem(listItem)
             self.layerList.updateLayers()
-        
+
 
     def applyColor(self):
         fakeEvent = QKeyEvent(QKeyEvent.KeyPress, Qt.Key_P, Qt.ControlModifier)
@@ -257,16 +257,16 @@ class GraphicsEditor(QWidget):
     def createMenu(self, mainWindow):
         menu = mainWindow.menuBar()
         menu.clear()
-        
+
         ### File Menu
         ### Note: The actions below automatically pass a bolean to the methods called, which can screw up any variables listed in the definition.
         fileMenu = menu.addMenu("File")
-        
+
         loadLayoutAction = QAction("Load Layout", self)
         loadLayoutAction.setShortcut(QKeySequence.Open)
         loadLayoutAction.triggered.connect(self.loadLayout)
         fileMenu.addAction(loadLayoutAction)
-        
+
         saveLayoutAction = QAction("Save Layout", self)
         saveLayoutAction.setShortcut(QKeySequence.Save)
         saveLayoutAction.triggered.connect(lambda: self.saveLayout(self.fileName))
@@ -279,7 +279,7 @@ class GraphicsEditor(QWidget):
         exportPdfAction = QAction("Export PDF", self)
         exportPdfAction.triggered.connect(lambda: self.exportPDF()) # Note: Using a lambda prevents "triggered" from emitting a boolean, which would set "fileList" to False in exportPDF.
         fileMenu.addAction(exportPdfAction)
-        
+
         exportPdfBatchAction = QAction("Export PDF Batch", self)
         exportPdfBatchAction.triggered.connect(self.exportPDFBatch)
         fileMenu.addAction(exportPdfBatchAction)
@@ -287,7 +287,7 @@ class GraphicsEditor(QWidget):
         exportImageAction = QAction("Export Image", self)
         exportImageAction.triggered.connect(lambda: self.exportImage()) # Note: Using a lambda prevents "triggered" from emitting a boolean, which would set "fileList" to False in exportPDF.
         fileMenu.addAction(exportImageAction)
-        
+
         exportImageBatchAction = QAction("Export Image Batch", self)
         exportImageBatchAction.triggered.connect(self.exportImageBatch)
         fileMenu.addAction(exportImageBatchAction)
@@ -296,22 +296,22 @@ class GraphicsEditor(QWidget):
         exitAction.setShortcut(QKeySequence.Quit)
         exitAction.triggered.connect(self.close)
         fileMenu.addAction(exitAction)
-        
+
         # Insert Menu
         insertMenu = menu.addMenu("Insert")
-        
+
         embedImageAction = QAction("Embed Image", self)
         embedImageAction.triggered.connect(self.embedImage)
         insertMenu.addAction(embedImageAction)
-        
+
         setBoxBackgroundAction = QAction("Set Box Background", self)
         setBoxBackgroundAction.triggered.connect(self.setBoxBackground)
         insertMenu.addAction(setBoxBackgroundAction)
-        
+
         deleteBoxBackgroundAction = QAction("Delete Box Background", self)
         deleteBoxBackgroundAction.triggered.connect(self.deleteBoxBackground)
         insertMenu.addAction(deleteBoxBackgroundAction)
-        
+
         setSceneBackgroundAction = QAction("Set Scene Background", self)
         setSceneBackgroundAction.triggered.connect(self.setSceneBackground)
         insertMenu.addAction(setSceneBackgroundAction)
@@ -322,11 +322,11 @@ class GraphicsEditor(QWidget):
 
         # Edit Menu
         editMenu = menu.addMenu("Edit")
-        
+
         fontAction = QAction("Select Font", self)
         fontAction.triggered.connect(self.selectFont)
         editMenu.addAction(fontAction)
-        
+
         applyTemplateAction = QAction("Apply Template", self)
         applyTemplateAction.triggered.connect(self.applyTemplate)
         editMenu.addAction(applyTemplateAction)
@@ -334,19 +334,19 @@ class GraphicsEditor(QWidget):
         batchTemplateAction = QAction("Apply Template Batch", self)
         batchTemplateAction.triggered.connect(self.batchApplyTemplate)
         editMenu.addAction(batchTemplateAction)
-        
-        
+
+
     def setActiveTextItem(self, item):
         self.activeTextItem = item
-        
-        
+
+
     def resizeScene(self):
         width = int(self.widthInput.text())
         height = int(self.heightInput.text())
         self.scene.setSceneRect(0, 0, width, height) # Update size dynamically
         self.view.setSceneRect(self.scene.sceneRect())
-    
-    
+
+
     def embedImage(self):
         self.activeTextItem = self.scene.getActiveTextItem()  # Get active item from scene
         fileName, _ = QFileDialog.getOpenFileName(self, "Open Image", "", "Images (*.png *.jpg *.jpeg)")
@@ -374,27 +374,27 @@ class GraphicsEditor(QWidget):
             pos = self.activeTextItem.pos()
             self.posXInput.setText(str(int(pos.x())))
             self.posYInput.setText(str(int(pos.y())))
-    
-    
+
+
     def rotateBox(self):
         self.activeTextItem = self.scene.getActiveTextItem()
         self.activeTextItem.setRotation(int(self.rotateBoxInput.text()))
-        
-        
-    # Update QLineEdit fields with the active item's rotation.    
+
+
+    # Update QLineEdit fields with the active item's rotation.
     def updateRotationInput(self):
         self.activeTextItem = self.scene.getActiveTextItem()
         if self.activeTextItem:
             degrees = self.activeTextItem.rotation()
             self.rotateBoxInput.setText(str(int(degrees)))
-            
-            
+
+
     def updatePaddingInput(self):
         self.activeTextItem = self.scene.getActiveTextItem()
         if self.activeTextItem:
             self.boxPaddingInput.setText(str(int(self.activeTextItem.padding)))
-            
-            
+
+
     # Update QLineEdit field with the active item's grid size.
     def updateGridInput(self):
         self.activeTextItem = self.scene.getActiveTextItem()
@@ -407,8 +407,8 @@ class GraphicsEditor(QWidget):
         if self.activeTextItem:
             self.boxWidthInput.setText(str(int(self.activeTextItem.lockedWidth)))
             self.boxHeightInput.setText(str(int(self.activeTextItem.lockedHeight)))
-        
-        
+
+
     def setBoxPadding(self):
         self.activeTextItem = self.scene.getActiveTextItem()
         paddingDummy = int(self.boxPaddingInput.text())
@@ -417,8 +417,8 @@ class GraphicsEditor(QWidget):
         if paddingDummy > 0:
             self.activeTextItem.padding = paddingDummy
         self.activeTextItem.updatePadding()
-            
-            
+
+
     def setSnapGridSize(self):
         self.activeTextItem = self.scene.getActiveTextItem()
         gridDummy = int(self.gridSizeInput.text())
@@ -427,7 +427,7 @@ class GraphicsEditor(QWidget):
                 self.snapToGrid = False
         if gridDummy > 1:
             self.activeTextItem.gridSize =  gridDummy
-            self.snapToGrid = True        
+            self.snapToGrid = True
 
 
     def lockBox(self):
@@ -436,6 +436,7 @@ class GraphicsEditor(QWidget):
          self.activeTextItem.lockedHeight = int(self.boxHeightInput.text())
          self.activeTextItem.update()
          self.scene.update()
+         self.activeTextItem.document().setTextWidth(self.activeTextItem.boundingRect().width()) # Word wrap.
 
 
     def toggleBoxLock(self):
@@ -443,21 +444,22 @@ class GraphicsEditor(QWidget):
         self.activeTextItem.isLocked = not self.activeTextItem.isLocked
         self.activeTextItem.update()
         self.scene.update()
-         
-         
+        self.activeTextItem.document().setTextWidth(self.activeTextItem.boundingRect().width()) # Word wrap.
+
+
     def setBoxBackground(self):
         fileName, _ = QFileDialog.getOpenFileName(self, "Open Image", "", "Images (*.png *.jpg *.jpeg)")
         self.activeTextItem = self.scene.getActiveTextItem()
         if fileName and self.activeTextItem:
             self.activeTextItem.setBackgroundImage(fileName)
-    
-    
+
+
     def deleteBoxBackground(self):
         self.activeTextItem = self.scene.getActiveTextItem()
         if self.activeTextItem:
             self.activeTextItem.setBackgroundImage(None)
-            
-            
+
+
     def setSceneBackground(self, fileName=None):
         # Load and set background image for the scene
         if not fileName:
@@ -468,8 +470,8 @@ class GraphicsEditor(QWidget):
 
     def deleteSceneBackground(self):
         self.scene.backgroundPixmap = None
-    
-    
+
+
     def selectFont(self):
         self.activeTextItem = self.scene.getActiveTextItem()
         if not self.activeTextItem:
@@ -511,7 +513,7 @@ class GraphicsEditor(QWidget):
             cursor.endEditBlock()  # End block edit for efficiency
             self.activeTextItem.setTextCursor(cursor)  # Restore cursor position
 
-        
+
     def saveLayout(self, fileName=None):
         if not fileName:
             fileName, dummy = QFileDialog.getSaveFileName(self, "Save Layout", "", "JSON Files (*.json)")
@@ -552,17 +554,17 @@ class GraphicsEditor(QWidget):
     # Batch process where a list of layouts are loaded onscreen in turn to have a template applied to them.
     def batchApplyTemplate(self):
         fileListName, dummy = QFileDialog.getOpenFileName(self, "Load Targets", "", "List Files (*.list)")
-        if fileListName: 
+        if fileListName:
             with open(fileListName, "r", encoding="utf-8") as file:
                 fileList = [line.strip() for line in file]
             templateFileName, dummy = QFileDialog.getOpenFileName(self, "Load Template", "", "JSON Files (*.json)")
             for targetFileName in fileList:
                 self.applyTemplate(targetFileName=targetFileName, templateFileName=templateFileName)
                 self.saveLayout(fileName=targetFileName)
-                
-    
+
+
     def applyTemplate(self, targetFileName=None, templateFileName=None):
-        if not templateFileName: # Single file process where the template is loaded and applied to the onscreen page.    
+        if not templateFileName: # Single file process where the template is loaded and applied to the onscreen page.
             templateFileName, dummy = QFileDialog.getOpenFileName(self, "Load Template", "", "JSON Files (*.json)")
         if templateFileName:
             with open(templateFileName, "r", encoding="utf-8") as file:
@@ -580,7 +582,7 @@ class GraphicsEditor(QWidget):
                 self.resizeScene()
                 layoutTemplate = layoutTemplate[3:] #"3" because the first three list entries are scene background, height and width.
                 noTemplateItems = len(layoutTemplate)
-                for t in range(noTemplateItems): 
+                for t in range(noTemplateItems):
                     if t > noCurrentItems: #There are more items in the template than in the current scene.
                         self.makeNewGraphicsItem()
                         sceneItems = self.scene.items()
@@ -629,11 +631,11 @@ class GraphicsEditor(QWidget):
                     sceneItems[t].update()
                 self.activeTextItem = None # Removes reference to old, no longer existing object.
                 self.scene.setActiveTextItem(self.activeTextItem)
-                
+
 
     def exportPDFBatch(self):
         setupFileName, dummy = QFileDialog.getOpenFileName(self, "Load Setup", "", "List Files (*.setup)")
-        if setupFileName: 
+        if setupFileName:
             with open(setupFileName, "r", encoding="utf-8") as file:
                 fileList = [line.strip() for line in file]
             setupInfo = fileList[0].split(";")
@@ -653,7 +655,7 @@ class GraphicsEditor(QWidget):
                 self.pdfUnit = QPageSize.Inch
             separator = int( setupInfo[6].split("=")[1].strip() )
             self.exportPDF(fileList=fileList[1:], separator = separator)
-            
+
 
     ### Prints the QGraphicsScene to a PDF file with vector text and embedded CMYK images.
     def exportPDF(self, fileList=[None], separator = 0):
@@ -674,7 +676,7 @@ class GraphicsEditor(QWidget):
         sceneHeight = 0
         previousSceneWidth = 0
         previousSceneHeight = 0
-        
+
         for entry in fileList:
             if entry:
                 entryList = entry.split(";")
@@ -693,11 +695,11 @@ class GraphicsEditor(QWidget):
             if self.scene.cutBleed:
                 bleed = 35 #int(3/25,4*300)
                 sourceRect = sourceRect.adjusted(bleed, bleed, -bleed, -bleed)
-                
+
             # Define the target rectangle where the scene will be drawn
             sceneWidth = self.scene.sceneRect().width()
             sceneHeight = self.scene.sceneRect().height()
-            
+
             # Autoposition elements if positions are set to <0.
             if entry:
                 if dummyPosX < 0:
@@ -734,7 +736,7 @@ class GraphicsEditor(QWidget):
 
     def exportImageBatch(self):
         setupFileName, dummy = QFileDialog.getOpenFileName(self, "Load Setup", "", "List Files (*.setup)")
-        if setupFileName: 
+        if setupFileName:
             with open(setupFileName, "r", encoding="utf-8") as file:
                 fileList = [line.strip() for line in file]
             setupInfo = fileList[0].split(";")
@@ -745,7 +747,7 @@ class GraphicsEditor(QWidget):
             else:
                 self.imageColorModel = QImage.Format_ARGB32
             self.exportImage(fileList=fileList[1:]) # The first line is setup info and isn't actually a file link, so we remove it.
-            
+
 
     def exportImage(self, fileList=[None]):
         # Set image color mode.
@@ -755,7 +757,7 @@ class GraphicsEditor(QWidget):
         else:
             imageColorModel = QImage.Format_ARGB32
             imageFileFormat = ".png"
-    
+
         painter = QPainter()
         for entry in fileList:
             if entry:
@@ -770,7 +772,7 @@ class GraphicsEditor(QWidget):
             if self.scene.cutBleed:
                 bleed = 35 #int(3/25,4*300)
                 sourceRect = sourceRect.adjusted(bleed, bleed, -bleed, -bleed)
-        
+
             image = QImage(sourceRect.size().toSize(), imageColorModel)
             dpm = int(self.imageResolution/0.0254)
             image.setDotsPerMeterX(dpm)
@@ -779,15 +781,15 @@ class GraphicsEditor(QWidget):
                 image.fill(Qt.white)  # Fill background with white
             else:
                 image.fill(Qt.transparent)
-            
+
             # Prepare rendering
             painter.begin(image)
             painter.setRenderHint(QPainter.Antialiasing)
-            
+
             # Render only the specified portion
             self.scene.render(painter, target=QRectF(0, 0, sourceRect.width(), sourceRect.height()), source=sourceRect)
             painter.end()
-            
+
             # Save the image
             image.save(fileName)
         if len(fileList > 1):

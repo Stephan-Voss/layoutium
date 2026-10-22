@@ -6,18 +6,17 @@ from PySide6.QtGui import  QAction
 ### A list widget that allows reordering and deletion of layers (boxes).
 ###
 class LayerControl(QListWidget):
-    
+
     def __init__(self, scene):
         super().__init__()
         self.scene = scene
         self.setDragDropMode(QListWidget.InternalMove)
         self.itemDoubleClicked.connect(self.renameLayer)
         self.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.setSelectionMode
         self.customContextMenuRequested.connect(self.openContextMenu)
         self.currentItemChanged.connect(self.highlightGraphicsItem)
-    
-    
+
+
     # Opens a right-click context menu for deleting layers.
     def openContextMenu(self, pos: QPoint):
         item = self.itemAt(pos)
@@ -45,12 +44,12 @@ class LayerControl(QListWidget):
             if graphicsItem:
                 graphicsItem.setZValue(self.count() - i)
 
-    
+
     def dropEvent(self, event):
         super().dropEvent(event)
         self.updateLayers()
 
-    
+
     # Allows renaming a layer via an inline text edit.
     def renameLayer(self, item):
         edit = QLineEdit(item.text())
@@ -88,4 +87,3 @@ class LayerControl(QListWidget):
                 self.scene.setActiveTextItem(graphicsItem)
         # Let the base class handle the event
         super().mousePressEvent(event)
-        

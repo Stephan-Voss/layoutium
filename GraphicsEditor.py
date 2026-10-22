@@ -516,7 +516,7 @@ class GraphicsEditor(QWidget):
 
     def saveLayout(self, fileName=None):
         if not fileName:
-            fileName, dummy = QFileDialog.getSaveFileName(self, "Save Layout", "", "JSON Files (*.json)")
+            fileName, _ = QFileDialog.getSaveFileName(self, "Save Layout", "", "JSON Files (*.json)")
         if fileName:
             layoutData = []
             layoutData.append(self.scene.backgroundPixmap)
@@ -531,7 +531,7 @@ class GraphicsEditor(QWidget):
 
     def loadLayout(self, fileName=None):
         if not fileName:
-            fileName, dummy = QFileDialog.getOpenFileName(self, "Load Layout", "", "JSON Files (*.json)")
+            fileName, _ = QFileDialog.getOpenFileName(self, "Load Layout", "", "JSON Files (*.json)")
         if fileName:
             with open(fileName, "r", encoding="utf-8") as file:
                 self.fileName = fileName
@@ -553,11 +553,11 @@ class GraphicsEditor(QWidget):
 
     # Batch process where a list of layouts are loaded onscreen in turn to have a template applied to them.
     def batchApplyTemplate(self):
-        fileListName, dummy = QFileDialog.getOpenFileName(self, "Load Targets", "", "List Files (*.list)")
+        fileListName, _ = QFileDialog.getOpenFileName(self, "Load Targets", "", "List Files (*.list)")
         if fileListName:
             with open(fileListName, "r", encoding="utf-8") as file:
                 fileList = [line.strip() for line in file]
-            templateFileName, dummy = QFileDialog.getOpenFileName(self, "Load Template", "", "JSON Files (*.json)")
+            templateFileName, _ = QFileDialog.getOpenFileName(self, "Load Template", "", "JSON Files (*.json)")
             for targetFileName in fileList:
                 self.applyTemplate(targetFileName=targetFileName, templateFileName=templateFileName)
                 self.saveLayout(fileName=targetFileName)
@@ -565,7 +565,7 @@ class GraphicsEditor(QWidget):
 
     def applyTemplate(self, targetFileName=None, templateFileName=None):
         if not templateFileName: # Single file process where the template is loaded and applied to the onscreen page.
-            templateFileName, dummy = QFileDialog.getOpenFileName(self, "Load Template", "", "JSON Files (*.json)")
+            templateFileName, _ = QFileDialog.getOpenFileName(self, "Load Template", "", "JSON Files (*.json)")
         if templateFileName:
             with open(templateFileName, "r", encoding="utf-8") as file:
                 layoutTemplate = json.load(file)
@@ -634,7 +634,7 @@ class GraphicsEditor(QWidget):
 
 
     def exportPDFBatch(self):
-        setupFileName, dummy = QFileDialog.getOpenFileName(self, "Load Setup", "", "List Files (*.setup)")
+        setupFileName, _ = QFileDialog.getOpenFileName(self, "Load Setup", "", "List Files (*.setup)")
         if setupFileName:
             with open(setupFileName, "r", encoding="utf-8") as file:
                 fileList = [line.strip() for line in file]
@@ -658,7 +658,9 @@ class GraphicsEditor(QWidget):
 
 
     ### Prints the QGraphicsScene to a PDF file with vector text and embedded CMYK images.
-    def exportPDF(self, fileList=[None], separator = 0):
+    def exportPDF(self, fileList=None, separator = 0):
+        if fileList is None: # This avoids using a mutable list in the function def.
+                fileList = [None]
         pdfWriter = QPdfWriter(self.pdfFileName)
         pdfWriter.setPdfVersion(self.pdfVersion)
         pdfWriter.setResolution(self.pdfResolution)
@@ -735,7 +737,7 @@ class GraphicsEditor(QWidget):
 
 
     def exportImageBatch(self):
-        setupFileName, dummy = QFileDialog.getOpenFileName(self, "Load Setup", "", "List Files (*.setup)")
+        setupFileName, _ = QFileDialog.getOpenFileName(self, "Load Setup", "", "List Files (*.setup)")
         if setupFileName:
             with open(setupFileName, "r", encoding="utf-8") as file:
                 fileList = [line.strip() for line in file]
@@ -749,7 +751,9 @@ class GraphicsEditor(QWidget):
             self.exportImage(fileList=fileList[1:]) # The first line is setup info and isn't actually a file link, so we remove it.
 
 
-    def exportImage(self, fileList=[None]):
+    def exportImage(self, fileList=None):
+        if fileList is None: # This avoids using a mutable list in the function def.
+                fileList = [None]
         # Set image color mode.
         if self.imageColorModel == "CMYK":
             imageColorModel = QImage.Format_CMYK8888

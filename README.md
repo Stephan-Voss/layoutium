@@ -48,7 +48,7 @@ Selected text can be formatted by clicking the tome icon.
 Padding (box internal margin) is set by entering a pixel value for "Pad".  
 Clicking the square to the left of the unicorn, will allow you to select a color. Clicking the unicorn afterwards will apply the chosen color to any selected text in the box. Note that you need to write down the colors you want to use, as the color picker does not "remember" them.
 Boxes can be rotated by just typing in the desired angle (in degrees). Caveat: Rotated boxes do not obey borders/bleed.  
-Shortcuts are ctrl +: B(bold), I(italics), U(underline), K(small caps), "Up arrow"(superscript), "Down arrow"(subscript), P(apply color), D(open color selector).  
+Shortcuts are ctrl +: B(bold), I(italics), U(underline), K(small caps), "Up arrow"(superscript), "Down arrow"(subscript), P(apply color), D(open color selector), E(center), L(left), R(right), J(justify).  
 
   
 ### ~ Layers ~  
@@ -125,5 +125,4 @@ Warning: This will delete anything currently onscreen!
 mainLayoutium --> MainWindow --> GraphicsEditor (widget & menu) --> GraphicsScene + GraphicsView + GraphicsTextItem (boxes)  
 
 ### Planned  
-GraphicsEditor --> Specialized Editors/Widgets for MainWindow  
-
+GraphicsEditor --> Specialized Editors/Widgets for MainWindow

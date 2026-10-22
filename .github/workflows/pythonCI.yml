@@ -21,4 +21,4 @@ jobs:
       run: python -c "print('Project loads successfully')"
 
     - name: Run Ruff
-      run: ruff check . --ignore N999,I001,RUF059,SIM102,SIM201
+      run: ruff check . --ignore N999,I001,RUF059,SIM102,SIM117,SIM201

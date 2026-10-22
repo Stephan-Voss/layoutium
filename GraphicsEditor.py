@@ -444,7 +444,10 @@ class GraphicsEditor(QWidget):
         self.activeTextItem.isLocked = not self.activeTextItem.isLocked
         self.activeTextItem.update()
         self.scene.update()
-        self.activeTextItem.document().setTextWidth(self.activeTextItem.boundingRect().width()) # Word wrap.
+        if self.activeTextItem.isLocked:
+            self.activeTextItem.document().setTextWidth(self.activeTextItem.boundingRect().width()) # Word wrap.
+        else:
+            self.activeTextItem.document().setTextWidth(-1)
 
 
     def setBoxBackground(self):

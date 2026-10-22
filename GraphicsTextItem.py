@@ -33,8 +33,8 @@ class GraphicsTextItem(QGraphicsTextItem):
         doc = self.document()
         doc.setDocumentMargin(self.padding)
         self.setDocument(doc)  # Apply the document back
-        
-        
+
+
     def itemChange(self, change, value):
         if change == QGraphicsItem.ItemPositionChange:
             scene = self.scene()  # Get the scene
@@ -51,13 +51,13 @@ class GraphicsTextItem(QGraphicsTextItem):
     def boundingRect(self):
         return QRectF(0, 0, self.lockedWidth, self.lockedHeight) if self.isLocked else super().boundingRect()
 
-    
-    # Notify the scene that this item was clicked 
+
+    # Notify the scene that this item was clicked
     def mousePressEvent(self, event):
         scene = self.scene()  # Get the scene
         if isinstance(scene, GraphicsScene):  # Ensure it's our scene
             scene.setActiveTextItem(self)  # Set this item as active
-            
+
         # Handle selection correctly
         if event.button() == Qt.LeftButton:
             if event.modifiers() == Qt.ControlModifier:
@@ -67,21 +67,21 @@ class GraphicsTextItem(QGraphicsTextItem):
                 # Deselect others and select only this one
                 scene.clearSelection()  # Clear all other selections
                 self.setSelected(True)
-                
+
         # Start dragging when the item is clicked (but not double-clicked).
         if event.button() == Qt.LeftButton and not event.modifiers() == Qt.ControlModifier:
             self._dragging = True
             self._drag_start_pos = event.scenePos() - self.pos()  # Store offset
             self.setCursor(QCursor(Qt.ClosedHandCursor))  # Change cursor to grabbing
         super().mousePressEvent(event)
-        
+
         # Find corresponding layer list item and select it
         for i in range(self.scene().layerList.count()):
             listItem = self.scene().layerList.item(i)
             if listItem.data(Qt.UserRole) == self:  # Compare stored reference
                 self.scene().layerList.setCurrentItem(listItem)
                 break
-            
+
 
     # Move the item as long as the mouse is pressed.
     def mouseMoveEvent(self, event):
@@ -112,8 +112,8 @@ class GraphicsTextItem(QGraphicsTextItem):
         self._dragging = False
         self.setCursor(QCursor(Qt.OpenHandCursor))  # Reset cursor
         super().mouseReleaseEvent(event)
-        
-    
+
+
     # Enable text editing when double-clicked.
     def mouseDoubleClickEvent(self, event):
         self.setTextInteractionFlags(Qt.TextEditorInteraction)  # Enable editing
@@ -141,8 +141,8 @@ class GraphicsTextItem(QGraphicsTextItem):
             "padding": self.padding,
             "rotation": self.rotation()
             }
-     
-     
+
+
     # Used for loading layouts.
     @staticmethod
     def fromDict(data):
@@ -164,7 +164,7 @@ class GraphicsTextItem(QGraphicsTextItem):
         item.updatePadding()
         item.setRotation(data["rotation"])
         return item
-    
+
     # Background image for box.
     def setBackgroundImage(self, filePath):
         self.backgroundImagePath = filePath
@@ -179,8 +179,8 @@ class GraphicsTextItem(QGraphicsTextItem):
         if self.backgroundImage:
             painter.drawPixmap(self.boundingRect().toRect(), self.backgroundImage)
         super().paint(painter, option, widget)
-    
-    
+
+
     # Allow shortcuts to set text formatting.
     def keyPressEvent(self, event):
         if event.modifiers() == Qt.ControlModifier:
@@ -189,7 +189,7 @@ class GraphicsTextItem(QGraphicsTextItem):
             currentFormat = cursor.charFormat()
             blockFmt = QTextBlockFormat()
             useBlockFormat = False
-            
+
             if event.key() == Qt.Key_B:
                 fmt.setFontWeight(QFont.Bold if not cursor.charFormat().fontWeight() == QFont.Bold else QFont.Normal)
             elif event.key() == Qt.Key_I:
@@ -208,8 +208,6 @@ class GraphicsTextItem(QGraphicsTextItem):
             elif event.key() == Qt.Key_D:  # Ctrl + D to open color picker
                 self.scene().openColorPicker()
                 return
-            elif event.key() == Qt.Key_Q:
-                    self.setResizable(not self.resizable)
             elif event.key() == Qt.Key_L:  # Ctrl + L -> Left Align
                 blockFmt.setAlignment(Qt.AlignLeft)
                 useBlockFormat = True
@@ -229,7 +227,7 @@ class GraphicsTextItem(QGraphicsTextItem):
             else:
                 super().keyPressEvent(event)
                 return
-            
+
             if useBlockFormat:
                 cursor.mergeBlockFormat(blockFmt)  # Apply format
                 self.setTextCursor(cursor)  # Ensure changes take effect
@@ -240,5 +238,3 @@ class GraphicsTextItem(QGraphicsTextItem):
                 self.setTextCursor(cursor)
         else:
             super().keyPressEvent(event)
-    
-        

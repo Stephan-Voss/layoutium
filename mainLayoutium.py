@@ -1,7 +1,6 @@
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import qInstallMessageHandler
-import os
-import sys
+import contextlib, os, sys
 # Ensure current directory is in sys.path to make imports of script files work.
 sys.path.append( os.path.dirname(os.path.abspath(__file__)) )
 from MainWindow import MainWindow
@@ -19,17 +18,19 @@ def customQtMessageHandler(msgType, context, message):
 ### Start by building the mainwindow which will contain the different tabs/apps.
 ###
 if __name__ == "__main__":
-    
-    app = QApplication(sys.argv)
-    
-    qInstallMessageHandler(customQtMessageHandler)  # Install the handler
-    
-    # DEBUG: Consider uncommenting this when debugging.
-    logFile = "debug.log"
-    sys.stdout = open(logFile, "w")  # Redirect print output to a file
-    sys.stderr = sys.stdout  # Also capture errors
 
-    editor = MainWindow()
-    editor.show()
-    
-    sys.exit(app.exec())
+    app = QApplication(sys.argv)
+
+    qInstallMessageHandler(customQtMessageHandler)  # Install the handler
+
+    # DEBUG: Consider uncommenting this when debugging.
+    #logFile = "debug.log"
+    #sys.stdout = open(logFile, "w")  # Redirect print output to a file
+    #sys.stderr = sys.stdout  # Also capture errors
+    with open("debug.log", "w", encoding="utf-8") as logFile:
+        with contextlib.redirect_stdout(logFile), contextlib.redirect_stderr(logFile):
+
+            editor = MainWindow()
+            editor.show()
+
+            sys.exit(app.exec())
